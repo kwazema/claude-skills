@@ -23,6 +23,9 @@ npx skills add kwazema/claude-skills --skill kw-stack-audit
 | [kw-vite-checker-setup](./skills/kw-vite-checker-setup/) | Configure vite-plugin-checker + vite-plugin-terminal for terminal errors | `vite checker`, `errores en terminal` |
 | [kw-update-skills](./skills/kw-update-skills/) | Update all external third-party skills | `update skills`, `actualizar skills` |
 | [kw-code-cleanup](./skills/kw-code-cleanup/) | Add a code quality cleanup phase to a GSD milestone | `code cleanup`, `limpieza de codigo` |
+| [kw-gsd-fortify](./skills/kw-gsd-fortify/) | Deep codebase analysis before GSD phase execution (4 parallel agents) | `fortify phase`, `fortificar fase` |
+| [kw-cubic](./skills/kw-cubic/) | Process cubic.ai code review and apply changes that fit the architecture | `cubic`, `cubic review` |
+| [kw-skill-docs](./skills/kw-skill-docs/) | Generate a comprehensive catalog of all installed skills | `skill docs`, `documentar skills` |
 
 ## How skills work
 
