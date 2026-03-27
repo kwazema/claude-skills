@@ -1,6 +1,6 @@
 # kw-skills
 
-Claude Code skills for frontend development workflows.
+Claude Code skills for frontend development workflows. Focused on TypeScript, React, Supabase, Vite, and code quality tooling.
 
 ## Install
 
@@ -14,15 +14,39 @@ npx skills add kwazema/claude-skills --skill kw-stack-audit
 
 ## Skills
 
-| Skill | Description |
-|-------|-------------|
-| **kw-stack-audit** | Audit frontend project quality config (TypeScript, formatter, Supabase types, deps, security, testing) |
-| **kw-find-docs** | Look up current documentation and code examples for any library via Context7 |
-| **kw-check-migrations-supabase** | Review and apply pending Supabase migrations with explanations |
-| **kw-login-supabase-cli** | Set up Supabase CLI authentication and project linking |
-| **kw-vite-checker-setup** | Configure vite-plugin-checker + vite-plugin-terminal for terminal error reporting |
-| **kw-update-skills** | Update all external third-party skills |
-| **kw-code-cleanup** | Add a code quality cleanup phase to a GSD milestone |
+| Skill | What it does | Triggers |
+|-------|-------------|----------|
+| [kw-stack-audit](./skills/kw-stack-audit/) | Audit frontend project quality (TS, formatter, Supabase types, deps, secrets) | `stack audit`, `revisar el stack` |
+| [kw-find-docs](./skills/kw-find-docs/) | Look up current docs and code examples for any library via Context7 | Activates when writing code with external packages |
+| [kw-check-migrations-supabase](./skills/kw-check-migrations-supabase/) | Review and apply pending Supabase migrations with explanations | `check migrations`, `push migrations` |
+| [kw-login-supabase-cli](./skills/kw-login-supabase-cli/) | Set up Supabase CLI auth and project linking | `login supabase`, `conectar supabase` |
+| [kw-vite-checker-setup](./skills/kw-vite-checker-setup/) | Configure vite-plugin-checker + vite-plugin-terminal for terminal errors | `vite checker`, `errores en terminal` |
+| [kw-update-skills](./skills/kw-update-skills/) | Update all external third-party skills | `update skills`, `actualizar skills` |
+| [kw-code-cleanup](./skills/kw-code-cleanup/) | Add a code quality cleanup phase to a GSD milestone | `code cleanup`, `limpieza de codigo` |
+
+## How skills work
+
+Skills are installed into `~/.claude/skills/` and loaded automatically by [Claude Code](https://docs.anthropic.com/en/docs/claude-code) based on trigger phrases in the conversation. Each skill contains agent instructions that guide Claude through a specific workflow.
+
+The [skills CLI](https://skills.sh) manages installation and updates. It supports 40+ AI coding agents (Claude Code, Cursor, Windsurf, Gemini CLI, etc.).
+
+## Repository structure
+
+```
+skills/
+  kw-skill-name/
+    README.md        # Human-readable overview (what you see on GitHub)
+    SKILL.md         # Agent workflow specification (what the AI reads)
+    references/      # Extended documentation for complex skills
+```
+
+## Contributing
+
+1. Create `skills/kw-{name}/` with `SKILL.md` and `README.md`
+2. `SKILL.md` must have YAML frontmatter with `name` and `description` fields
+3. Keep `SKILL.md` under 200 lines — use `references/` for detailed content
+4. Include both English and Spanish trigger words in the description
+5. Update the skills table in this README
 
 ## Requirements
 
