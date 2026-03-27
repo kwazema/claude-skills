@@ -1,6 +1,11 @@
 ---
 name: kw-vite-checker-setup
-description: Install and configure vite-plugin-checker (TypeScript errors) and vite-plugin-terminal (runtime errors) so all dev errors appear in the terminal. Use when setting up a Vite project, adding error reporting to dev server, or when the user wants errors visible without opening browser devtools.
+description: >
+  Install and configure vite-plugin-checker (TypeScript errors) and vite-plugin-terminal
+  (runtime errors) so all dev errors appear in the terminal. Use when setting up a Vite
+  project, adding error reporting to dev server, or when the user wants errors visible
+  without opening browser devtools. Triggers: "vite checker", "install vite checker",
+  "configurar vite checker", "errores en terminal", "vite error reporting".
 ---
 
 # Vite Checker Setup

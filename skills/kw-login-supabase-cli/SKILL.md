@@ -1,6 +1,9 @@
 ---
 name: kw-login-supabase-cli
-description: Set up Supabase CLI authentication and project linking. Use when the user says "login supabase", "connect supabase", "setup supabase cli", "link supabase", or needs to authenticate with Supabase CLI.
+description: >
+  Set up Supabase CLI authentication and project linking. Use when the user says
+  "login supabase", "connect supabase", "setup supabase cli", "link supabase",
+  "conectar supabase", "configurar supabase cli", or needs to authenticate with Supabase CLI.
 ---
 
 # Login Supabase CLI

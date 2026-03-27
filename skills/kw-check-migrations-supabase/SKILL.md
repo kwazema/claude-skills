@@ -13,7 +13,7 @@ Review and apply pending Supabase migrations with explanation and confirmation.
 
 Run `npx supabase db push --dry-run` to list migrations not yet applied to the remote database. If the command is not available or fails, fall back to `npx supabase migration list` and compare local vs remote status.
 
-If no pending migrations: report "No hay migraciones pendientes" and stop.
+If no pending migrations: report "No pending migrations" and stop.
 
 ### 2. Read and explain each migration
 
@@ -26,7 +26,7 @@ For each pending migration file in `supabase/migrations/`:
 Present as a numbered list:
 
 ```
-## Migraciones pendientes ({count})
+## Pending migrations ({count})
 
 1. **{filename}** — {one-line summary}
    {2-3 sentence explanation of what it does and why}
@@ -41,8 +41,8 @@ After presenting all migrations, ask:
 
 ```
 ---
-Estas {count} migraciones se aplicaran en orden a la base de datos remota.
-Quieres continuar? (si/no)
+These {count} migrations will be applied in order to the remote database.
+Continue? (yes/no)
 ---
 ```
 
