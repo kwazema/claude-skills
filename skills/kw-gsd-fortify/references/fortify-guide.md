@@ -241,6 +241,68 @@ const result = await supabase.from('table').select('...').eq('field', value);
 
 ---
 
+### `<ui_compliance>` — UI-SPEC Validation (only when Agent 5 ran)
+
+Full UI analysis that goes into CONTEXT.md. The PLAN.md `<fortify_notes_ui>` will contain per-task summaries.
+
+```markdown
+<ui_compliance>
+## UI validation against spec
+
+### UI-SPEC coverage
+| UI-SPEC requirement | Covered by | Status |
+|---|---|---|
+| [Spacing: gap-4 between cards] | Plan 01 Task 3 | OK |
+| [Color: primary for CTAs] | Plan 01 Task 5 | OK |
+| [Component: DataTable for list view] | — | GAP — no task implements this |
+
+### shadcn registry status
+| Component | In registry | Installed | Used in |
+|---|---|---|---|
+| Button | yes | yes (`components/ui/button.tsx`) | Task 1, 3, 5 |
+| DataTable | yes | no | Task 4 — install before execution |
+| [Custom multi-select] | no | no | Task 6 — requires user input |
+
+### Custom components needed
+**CC-1: [Descriptive name]**
+- Needed: [concrete UI need — e.g., "a date range picker with presets"]
+- Why: [why shadcn base doesn't cover it]
+- UI-SPEC reference: [which section/requirement]
+- Used in: Plan {X}-01, Task N
+- Action: User will provide the component code or npm package. Will be integrated respecting the project's `shadcn init` config.
+
+**CC-2: ...**
+
+### Existing composition patterns
+- Component nesting pattern: `src/components/dashboard/DashboardCard.tsx:15` — Card > CardHeader > CardTitle structure
+- Form pattern: `src/components/forms/EmployeeForm.tsx:30` — useForm + zodResolver + FormField wrappers
+
+### Detected deviations
+- [Plan says "use a modal for editing" but UI-SPEC says "inline editing" — clarify]
+- [Plan references `Tabs` component but UI-SPEC specifies sidebar navigation]
+</ui_compliance>
+```
+
+**How to build UI compliance analysis:**
+1. Read UI-SPEC.md completely — extract every component, spacing, color, and typography decision
+2. For each UI-related task in PLANs, check if its action aligns with the spec
+3. For each component mentioned, verify: exists in shadcn registry → installed in project → matches spec intent
+4. When a gap is found between spec and plan, flag it — don't silently resolve
+5. When a custom component is needed, describe the NEED, not the solution — the user decides the implementation
+
+**When to flag as CC-N (custom component):**
+- shadcn base registry has no matching component
+- The need is clearly defined in UI-SPEC or implied by plan tasks
+- A composition of base components would be overly complex or brittle
+- The user should choose the source
+
+**When NOT to flag:**
+- A simple composition of 2-3 shadcn components covers the need
+- The component exists in shadcn but is just not installed yet (that's a registry note, not CC)
+- The "custom" need is actually just styling an existing component differently
+
+---
+
 ## Part 2: PLAN.md Annotation
 
 These notes go at the END of each PLAN.md as a `<fortify_notes>` block.
@@ -284,7 +346,50 @@ These notes go at the END of each PLAN.md as a `<fortify_notes>` block.
 | Full risk assessment | `<risk_matrix>` | Per-task relevant risks |
 | Inter-plan dependencies | — | Cross-plan coordination |
 
-**Rule of thumb:** If the executor needs to UNDERSTAND it → CONTEXT.md. If the executor needs to ACT on it → PLAN.md `<fortify_notes>`.
+| UI-SPEC coverage gaps, registry status | CONTEXT.md `<ui_compliance>` | — |
+| Per-task spacing/color/component notes | — | PLAN.md `<fortify_notes_ui>` |
+| Custom component requests (CC-N) | — | PLAN.md `<fortify_notes_ui>` |
+
+**Rule of thumb:** If the executor needs to UNDERSTAND it → CONTEXT.md. If the executor needs to ACT on it → PLAN.md `<fortify_notes>`. UI-specific action items → `<fortify_notes_ui>`.
+
+### `<fortify_notes_ui>` — UI Implementation Guidance (only when Agent 5 ran)
+
+Appended AFTER `<fortify_notes>` in each PLAN.md. Separate block for visual distinction.
+
+```markdown
+<fortify_notes_ui>
+## UI compliance notes (added by fortify)
+
+### Spec coverage for this plan
+- Task 1 implements [UI-SPEC requirement] — use `gap-4` between items per spec
+- Task 3 implements [UI-SPEC requirement] — follow color palette: `primary` for CTA, `muted` for secondary
+
+### Pre-execution dependencies
+- Install `data-table`: `npx shadcn@latest add data-table`
+- Install `combobox`: `npx shadcn@latest add combobox`
+
+### Custom component needs (requires user input)
+- **CC-1: [Name]** — needed for Task N.
+  Needed: [description of what the UI needs]
+  → Provide the component code or npm package. Will be integrated respecting `shadcn init` config.
+
+### Task-specific UI guidance
+- **Task 1 — [description]:**
+  - Component: Use `Card` with `CardHeader` + `CardContent`. Pattern: `src/components/dashboard/Widget.tsx:20`
+  - Spacing: `p-6` inside card, `gap-4` between cards (from UI-SPEC)
+  - Accessibility: Follow existing `aria-label` pattern in `Widget.tsx:35`
+
+- **Task 3 — [description]:**
+  - Color: UI-SPEC says `destructive` variant for delete actions. Don't use custom red.
+  - Typography: `text-sm font-medium` for labels (existing pattern in forms)
+</fortify_notes_ui>
+```
+
+**Key rules for `<fortify_notes_ui>`:**
+- Custom component needs (CC-N) are the most critical output — the user MUST provide input before execution
+- Always reference the UI-SPEC section that drives each note
+- Include existing codebase patterns (file:line) so the executor follows established conventions
+- Never propose custom component implementations — describe the need, let the user choose the source
 
 ### Annotation rules
 
@@ -347,6 +452,18 @@ These notes go at the END of each PLAN.md as a `<fortify_notes>` block.
 - [ ] Services with mutations for affected tables
 - [ ] Edge functions or external integrations
 
+### UI Compliance (only when UI-SPEC.md exists)
+- [ ] Every UI-SPEC requirement mapped to at least one plan task
+- [ ] Every shadcn component referenced in plans exists in the registry
+- [ ] Every shadcn component needed is installed in `components/ui/`
+- [ ] Spacing tokens in plan actions match UI-SPEC scale
+- [ ] Color usage in plan actions follows UI-SPEC palette (60/30/10 rule)
+- [ ] Typography in plan actions follows UI-SPEC font scale
+- [ ] Component composition follows existing codebase patterns
+- [ ] Custom component needs identified and flagged as CC-N for user input
+- [ ] No plan task invents a custom component — all custom needs go through the user
+- [ ] Accessibility patterns from existing components are noted for new components
+
 ### Risks
 - [ ] React Query cache keys needing invalidation
 - [ ] TypeScript interfaces needing new/changed fields
@@ -359,6 +476,11 @@ These notes go at the END of each PLAN.md as a `<fortify_notes>` block.
 ---
 
 ## Anti-Patterns
+
+**Don't add (UI-specific):**
+- Custom component implementations — the user chooses the source, not the agent
+- "Use shadcn X instead of Y" without checking the UI-SPEC first — the spec is the authority
+- Generic accessibility advice not grounded in the project's existing patterns
 
 **Don't add:**
 - File listings without explanation
@@ -377,3 +499,6 @@ These notes go at the END of each PLAN.md as a `<fortify_notes>` block.
 - Business context for impact understanding
 - Questions when something is ambiguous
 - Clear per-task guidance in `<fortify_notes>`
+- CC-N flags for every custom component need — with clear description of WHAT and WHY
+- Per-task UI notes in `<fortify_notes_ui>` referencing UI-SPEC sections and existing patterns
+- Pre-execution shadcn install commands for components not yet in the project

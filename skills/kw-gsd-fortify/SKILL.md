@@ -42,6 +42,8 @@ The skill detects which artifacts exist and adapts:
 
 Read the phase directory. Load CONTEXT.md and all PLAN.md files if they exist. Determine mode from the table above.
 
+**Check for UI-SPEC.md:** Look for `{phase_num}-UI-SPEC.md` in the phase directory. If it exists, the UI Compliance Reviewer agent (Agent 5) will be spawned in step 2. If it doesn't exist, Agent 5 is skipped entirely.
+
 **From PLAN.md files, extract:**
 - `files_modified` from frontmatter of every plan
 - `<files>` from each task
@@ -101,6 +103,38 @@ Based on ALL planned changes across ALL plans, identify:
 
 Output: risk matrix with severity (high/medium/low), concrete description, and mitigation.
 
+**Agent 5 — UI Compliance Reviewer (only when UI-SPEC.md exists):**
+This agent is a **validator and question-asker**, not a designer. It never invents UI — it validates what's planned and asks the user when something is missing.
+
+Takes the UI-SPEC.md and all PLAN.md files. For each task that touches UI components:
+
+1. **Validate against UI-SPEC contract:**
+   - Cross-reference planned components with the UI-SPEC's declared component approach (Visuals pillar)
+   - Check that spacing, typography, and color decisions in UI-SPEC are reflected in the plan's task actions
+   - Flag tasks that add UI elements not covered by the spec (missing contract)
+   - Flag spec requirements that no task implements (missing coverage)
+
+2. **Verify shadcn registry usage:**
+   - For each component the plan intends to use, verify it exists in the shadcn registry
+   - Check if the project already has it installed (search `components/ui/` for existing components)
+   - If a plan references a shadcn component not yet installed, note it as a pre-execution dependency
+   - Flag any planned custom component that could be replaced by an existing shadcn component
+
+3. **Detect custom component needs — ASK, don't invent:**
+   When the analysis reveals a UI need that shadcn base components cannot fulfill:
+   - Do NOT propose a custom implementation
+   - Instead, flag it as a **UI-QUESTION** for the user
+   - The user may have access to component libraries and prefers to choose the component/block themselves
+   - Format: describe WHAT is needed and WHY, then ask the user to provide the component code or npm package
+   - The executor will then integrate the user-provided component respecting the project's `shadcn init` configuration
+
+4. **Check component composition patterns:**
+   - Verify that planned component hierarchies follow existing patterns in the codebase
+   - Flag unusual nesting or prop-drilling that deviates from established patterns
+   - Check for accessibility patterns already used in the project (aria attributes, keyboard navigation)
+
+Output: UI compliance report with — spec coverage gaps, registry verification, custom component questions, pattern deviations.
+
 #### Pre-plan mode — 2 agents in parallel
 
 **Agent 1 — Data Flow Tracer:**
@@ -126,6 +160,7 @@ Present a concise overview:
 - **Pattern coverage:** N tasks have matching patterns in codebase, M tasks are novel (no precedent).
 - **Data layer:** N tables involved, migration ordering needed yes/no, type regen needed yes/no.
 - **Risks:** N high, M medium, P low.
+- **UI compliance (only if Agent 5 ran):** N spec gaps, M registry issues, P custom component questions.
 
 #### 3b. Flag gaps and inconsistencies
 
@@ -160,12 +195,13 @@ Score each dimension (0-2):
 | **Risks** | 0 risks, or all already handled by plans | 1+ medium risks not in plans | 1+ high risks not in plans |
 | **Patterns** | All tasks have patterns already in plan interfaces | Some tasks lack pattern refs | Novel tasks with no codebase precedent |
 | **Data layer** | No DB involvement, or trivial queries | Joins/nullability worth documenting | Migrations needed, type regen, RLS gaps |
+| **UI compliance** *(only if Agent 5 ran)* | All components exist in registry, spec fully covered | Minor spec gaps or missing installs | Custom components needed, spec coverage holes |
 
-**Total score (0-12):**
+**Total score (0-12, or 0-14 if UI dimension applies):**
 
-- **0-3 → SKIP:** Plans are well-specified. Fortify would be noise.
-- **4-6 → PARTIAL:** Write only sections with real signal.
-- **7-12 → FULL:** Full enrichment justified.
+- **0-3 → SKIP (0-4 with UI):** Plans are well-specified. Fortify would be noise.
+- **4-6 → PARTIAL (5-8 with UI):** Write only sections with real signal.
+- **7-12 → FULL (9-14 with UI):** Full enrichment justified.
 
 Ask the user for confirmation based on the verdict.
 
@@ -182,6 +218,7 @@ Read `references/fortify-guide.md` for detailed section templates and examples.
 - `<implementation_patterns>` — Per-plan pattern references with code snippets
 - `<data_layer_analysis>` — Tables, RLS, types, hooks, services, migration order
 - `<risk_matrix>` — Risks by severity with descriptions and mitigations
+- `<ui_compliance>` *(only when Agent 5 ran)* — UI-SPEC coverage analysis, shadcn registry status, custom component needs
 
 **In Pre-plan mode**, add: `<problem>`, `<current_behavior>`, enhanced `<code_context>`, enhanced `<specifics>`.
 
@@ -195,9 +232,41 @@ The `<fortify_notes>` block contains per-task guidance: pattern to follow, casca
 
 Read `references/fortify-guide.md` for the detailed annotation format and decision table of what goes in CONTEXT.md vs PLAN.md.
 
+#### `<fortify_notes_ui>` — UI-specific guidance (only when Agent 5 ran)
+
+Append a separate `<fortify_notes_ui>` block AFTER `<fortify_notes>` (or as the only block if there are no technical notes for this plan). This keeps UI guidance visually distinct from technical implementation notes.
+
+```markdown
+<fortify_notes_ui>
+## UI compliance notes (added by fortify)
+
+### Spec coverage
+- [UI-SPEC requirement] → covered by Task N
+- [UI-SPEC requirement] → NOT covered by any task — GAP
+
+### Component registry
+- `Button`, `Card`, `Dialog` — already installed in `components/ui/`
+- `DataTable` — in shadcn registry but NOT installed. Run `npx shadcn@latest add data-table` before execution.
+- `Combobox` — NOT in shadcn base registry.
+
+### Custom component needs (requires user input)
+- **CC-1: [Component description]**
+  Needed: [what the UI needs — e.g., "a multi-select dropdown with tag chips"]
+  Why: [why shadcn base doesn't cover this — e.g., "shadcn Select is single-select only"]
+  Used in: Task N — [task description]
+  → Provide the component code or npm package you prefer. It will be integrated respecting your `shadcn init` config.
+
+### Task-specific UI notes
+- **Task N — [description]:** Follow spacing scale from UI-SPEC (`gap-4` between cards, `p-6` inside). Pattern in `src/components/similar/Component.tsx:85`.
+- **Task M — [description]:** Color usage — UI-SPEC specifies `primary` for CTAs, `muted` for secondary actions. Don't use raw hex values.
+</fortify_notes_ui>
+```
+
+**NEVER modify existing `<task>` blocks.** `<fortify_notes_ui>` is append-only, same as `<fortify_notes>`.
+
 ### 6. Report improvements
 
-Present a clear summary of what was improved: sections added to CONTEXT.md, notes added to each PLAN.md, gaps resolved, and gaps still pending.
+Present a clear summary of what was improved: sections added to CONTEXT.md, notes added to each PLAN.md, gaps resolved, and gaps still pending. If Agent 5 ran, include UI compliance summary: spec coverage, registry status, and custom components pending user input (CC-N items block execution).
 
 ### 7. Commit
 
@@ -211,7 +280,7 @@ git commit -m "docs({phase_num}): fortify phase with deep codebase analysis and 
 
 - **Two targets, two purposes.** CONTEXT.md = understanding (WHY, WHAT IS). PLAN.md `<fortify_notes>` = action (HOW, WATCH OUT).
 - **Interactive, not blind.** Never write without presenting findings first. Gaps and inconsistencies are presented to the user.
-- **Plans are sacred.** Never modify existing tasks or frontmatter. Only append `<fortify_notes>`.
+- **Plans are sacred.** Never modify existing tasks or frontmatter. Only append `<fortify_notes>` and `<fortify_notes_ui>`.
 - **Decisions are sacred.** `<decisions>` and `<domain>` in CONTEXT.md are NEVER modified.
 - **Exact references over vague pointers.** Every finding includes file:line.
 - **No noise.** "This file exists" is noise. "This file does X at line Y, the plan changes its input — verify it still works" is signal.
