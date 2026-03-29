@@ -124,7 +124,7 @@ Takes the UI-SPEC.md and all PLAN.md files. For each task that touches UI compon
    When the analysis reveals a UI need that shadcn base components cannot fulfill:
    - Do NOT propose a custom implementation
    - Instead, flag it as a **UI-QUESTION** for the user
-   - The user may have access to component libraries and prefers to choose the component/block themselves
+   - The user may have access to component libraries (e.g., ui.shadcn.com, shadcnuikit.com, shadcnstudio.com, or paid registries) and prefers to choose the component/block themselves
    - Format: describe WHAT is needed and WHY, then ask the user to provide the component code or npm package
    - The executor will then integrate the user-provided component respecting the project's `shadcn init` configuration
 
