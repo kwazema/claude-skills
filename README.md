@@ -27,6 +27,7 @@ npx skills add kwazema/claude-skills --skill kw-stack-audit
 | [kw-gsd-phase-handoff](./skills/kw-gsd-phase-handoff/) | Prepare a clean chat for `gsd-execute-phase` and ask only material handoff questions | `te voy a pasar el execute`, `phase handoff` |
 | [kw-cubic](./skills/kw-cubic/) | Process cubic.ai code review and apply changes that fit the architecture | `cubic`, `cubic review` |
 | [kw-skill-docs](./skills/kw-skill-docs/) | Generate a comprehensive catalog of all installed skills | `skill docs`, `documentar skills` |
+| [kw-audit-references](./skills/kw-audit-references/) | Audit .planning/reference/ docs against codebase with parallel agents | Manual: `/kw-audit-references` |
 
 ## How skills work
 
