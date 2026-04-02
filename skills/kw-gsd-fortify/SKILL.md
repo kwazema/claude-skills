@@ -44,6 +44,8 @@ Read the phase directory. Load CONTEXT.md and all PLAN.md files if they exist. D
 
 **Check for UI-SPEC.md:** Look for `{phase_num}-UI-SPEC.md` in the phase directory. If it exists, the UI Compliance Reviewer agent (Agent 5) will be spawned in step 2. If it doesn't exist, Agent 5 is skipped entirely.
 
+**Load reference docs:** Read all `.planning/reference/*.md` files. These are living documents that describe the project's business logic, data model, integrations, and architecture. Pass their content to every research agent — it's the business context lens through which all analysis should be performed.
+
 **From PLAN.md files, extract:**
 - `files_modified` from frontmatter of every plan
 - `<files>` from each task
@@ -63,7 +65,7 @@ Read the phase directory. Load CONTEXT.md and all PLAN.md files if they exist. D
 #### Full mode and Plan-only mode — 4 agents in parallel
 
 **Agent 1 — Cascade Impact Analyzer:**
-Takes the complete list of `files_modified` from all plans. For each file:
+Takes the complete list of `files_modified` from all plans and the `.planning/reference/` docs as business context. For each file:
 - Find every file that imports or uses it (direct consumers)
 - Find every file that imports a direct consumer (2nd-level cascade)
 - Flag any file NOT in any plan's `files_modified` that will be affected
@@ -72,7 +74,7 @@ Takes the complete list of `files_modified` from all plans. For each file:
 Output: cascade dependency map + list of unplanned affected files with impact explanation.
 
 **Agent 2 — Implementation Pattern Scout:**
-For each task's `<action>`, search the codebase for similar implementations already done:
+Receives `.planning/reference/` docs to understand established conventions and business rules. For each task's `<action>`, search the codebase for similar implementations already done:
 - Find exact file:line where a similar pattern exists
 - Extract the code snippet (2-5 lines) showing the established pattern
 - Note whether the task should follow or deviate from the pattern, and why
@@ -81,7 +83,7 @@ For each task's `<action>`, search the codebase for similar implementations alre
 Output: per-task pattern references with code snippets.
 
 **Agent 3 — Data Layer Analyst:**
-Trace every database table and column mentioned or implied in the plans:
+Receives `.planning/reference/` docs — especially data model, state machine, and integration specs. Trace every database table and column mentioned or implied in the plans:
 - RLS policies that affect those tables (check Supabase migrations)
 - Type definitions in `integrations/supabase/types` that will need regeneration
 - Hooks in `src/hooks/` that query those tables
@@ -92,7 +94,7 @@ Trace every database table and column mentioned or implied in the plans:
 Output: data layer map + migration sequence + type regeneration checklist.
 
 **Agent 4 — Risk & Edge Case Hunter:**
-Based on ALL planned changes across ALL plans, identify:
+Receives `.planning/reference/` docs to cross-check business rules and constraints against planned changes. Based on ALL planned changes across ALL plans, identify:
 - **State management:** React Query cache keys that need invalidation after mutations
 - **TypeScript types:** Interfaces/types that need new fields or modified signatures
 - **UI consistency:** Components displaying data whose shape will change
