@@ -18,7 +18,7 @@ npx skills add kwazema/claude-skills --skill kw-stack-audit
 |-------|-------------|----------|
 | [kw-stack-audit](./skills/kw-stack-audit/) | Audit frontend project quality (TS, formatter, Supabase types, deps, secrets) | `stack audit`, `revisar el stack` |
 | [kw-find-docs](./skills/kw-find-docs/) | Look up current docs and code examples for any library via Context7 | Activates when writing code with external packages |
-| [kw-check-migrations-supabase](./skills/kw-check-migrations-supabase/) | Review and apply pending Supabase migrations with explanations | `check migrations`, `push migrations` |
+| [kw-check-migrations-supabase](./skills/kw-check-migrations-supabase/) | Review pending Supabase changes (migrations + edge functions) and deploy with confirmation | `check migrations`, `deploy functions`, `check supabase` |
 | [kw-login-supabase-cli](./skills/kw-login-supabase-cli/) | Set up Supabase CLI auth and project linking | `login supabase`, `conectar supabase` |
 | [kw-vite-checker-setup](./skills/kw-vite-checker-setup/) | Configure vite-plugin-checker + vite-plugin-terminal for terminal errors | `vite checker`, `errores en terminal` |
 | [kw-update-skills](./skills/kw-update-skills/) | Update all external third-party skills | `update skills`, `actualizar skills` |
