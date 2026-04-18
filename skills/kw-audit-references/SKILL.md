@@ -1,6 +1,6 @@
 ---
 name: kw-audit-references
-description: "Deep audit of .planning/reference/ docs, AGENTS.md, and PROJECT.md against current codebase and milestone changes. Manual-only — invoke when closing a milestone or when reference docs may be stale. Generates REFERENCE-AUDIT-v{milestone}.md report."
+description: "Deep audit of .planning/reference/ docs and PROJECT.md against current codebase and milestone changes. Manual-only — invoke when closing a milestone or when reference docs may be stale. Generates REFERENCE-AUDIT-v{milestone}.md report."
 ---
 
 # Audit References
@@ -13,7 +13,7 @@ Manual-only. Invoke explicitly with `/kw-audit-references`. The system will remi
 
 ## Arguments
 
-- No args: full audit of reference docs + AGENTS.md + PROJECT.md
+- No args: full audit of reference docs + PROJECT.md
 - `--full`: also audit phase artifacts (CONTEXT.md, PLAN.md) from the current milestone
 
 ## Workflow
@@ -31,8 +31,8 @@ Build a changelog: new services, new transitions, changed integrations, new comp
 
 **Always audited:**
 - All `.planning/reference/*.md` files
-- `AGENTS.md` (repo root)
 - `PROJECT.md` (`.planning/PROJECT.md`)
+- `CLAUDE.md` (repo root, if exists) — verify stack versions, commands, conventions match package.json, tsconfig, biome.json
 
 **With `--full` flag, also audit:**
 - `*-CONTEXT.md` and `*-PLAN.md` from phases in the current milestone
@@ -57,7 +57,7 @@ Each agent performs two passes:
 - For each key claim in the doc ("function X does Y"), read the actual code and verify
 - For state machines / lifecycle docs: verify transitions match actual service functions
 - For spec docs (Sage, OCR): verify field mappings match actual adapter code
-- For AGENTS.md: verify stack versions, commands, conventions match package.json, tsconfig, biome.json
+- For CLAUDE.md (repo): verify stack versions, commands, conventions match package.json, tsconfig, biome.json
 
 Each agent returns structured findings per `references/finding-format.md`.
 

@@ -102,16 +102,37 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 - Fase que ya discutiste mentalmente → `/gsd-discuss-phase {N} --all`
 - Encadenar sin paradas → `/gsd-discuss-phase {N} --chain` (discuss → plan → execute)
 
-## Post-ejecución (cadena estándar)
+## Cuándo saltar GSD entero
 
-- `/kw-check-migrations-supabase` — si tocó schema
-- `/gsd-verify-work` — UAT conversacional
+GSD es overhead para:
+
+- **Typos y cambios triviales de texto** (copy, labels, docs cortos). Edit directo.
+- **Lectura o explicación de código** (no hay cambios, no hay trazabilidad que preservar).
+- **Configuración personal del entorno** (CLAUDE.md, settings.json, skills propias, keybindings).
+- **Modo plan de Claude Code activo** (el plan es el artefacto de control, no GSD).
+
+En estos casos, Edit/Write directo sin comando GSD previo.
+
+## Post-fase (cadena estándar)
+
+Al terminar una fase de ejecución, aplicar según qué tocó:
+
+- `/kw-check-migrations-supabase` — si tocó schema Supabase
+- `/gsd-verify-work` — UAT conversacional, siempre útil
+- `/gsd-validate-phase` — Nyquist validation retroactiva
 - `/gsd-code-review` + `/gsd-code-review-fix` — bugs y calidad
+- `/gsd-ui-review` — si tocó frontend
+- `/gsd-eval-review` — si tocó AI/LLM
+- `/gsd-secure-phase` — si había threat model
 
 ## Cierre de milestone
 
-- `/gsd-complete-milestone`
+- `/gsd-complete-milestone` — archivar milestone
 - `/kw-audit-references` — auditar `.planning/reference/` contra código real
+- `/kw-stack-audit` — revisar tooling y base del proyecto
+- `/kw-code-cleanup` — añadir fase de limpieza si hay deuda de código
+- `/gsd-cleanup` — archivar directorios de fases completadas
+- `/gsd-health` — diagnóstico y reparación del directorio `.planning/`
 
 ## Tips prácticos
 
@@ -119,11 +140,12 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 - **Spike es binario**: responde sí/no a una pregunta concreta con código desechable. Si te descubres "mejorando el spike", para — ya pasó a implementación.
 - **Sketch es caro en contexto** (carga 4 references de estilo). Resérvalo para decisiones de layout o flujo grandes, no para componentes pequeños.
 - **En la duda, modo investigación.** Regla del `CLAUDE.md` global — mejor preguntar de más que tocar código a ciegas.
-- **Modo plan de Claude Code salta GSD.** Si estás en modo plan de Claude Code, el pipeline GSD no aplica.
 - **No hagas el pipeline completo siempre.** Añade cada paso solo si hay incertidumbre real en esa dimensión. Spec resuelve WHAT, spike resuelve feasibility, sketch resuelve UI, discuss resuelve HOW.
 - **Wrap-ups para persistir aprendizajes.** Si un spike o sketch enseñó algo reutilizable en fases futuras, `/gsd-spike-wrap-up` o `/gsd-sketch-wrap-up` lo empaqueta en skill de proyecto.
 
-## Ejemplo de sesión híbrida
+## Ejemplos de sesión híbrida
+
+### Ejemplo 1: feature grande
 
 **Input:**
 ```
@@ -148,6 +170,26 @@ Pipeline propuesto:
 7. /gsd-execute-phase {N}
 
 Se salta: spike (no hay duda técnica — es SQL + UI estándar).
+```
+
+### Ejemplo 2: bug localizado
+
+**Input:**
+```
+/kw-gsd-help-flow el filtro de facturas no respeta el estado "exportado"
+```
+
+**Output esperado:**
+```
+Señales detectadas: "no respeta" = bug, scope concreto, sin UI nueva.
+
+Pipeline propuesto:
+1. /gsd-debug filtro-estado-exportado
+   → Localizar dónde se ignora el estado (servicio? hook? query Supabase?)
+2. /gsd-quick
+   → Aplicar fix con atomic commit cuando esté claro
+
+Se salta: toda la cadena de fase (es mantenimiento, no feature).
 ```
 
 ---

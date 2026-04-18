@@ -1,6 +1,6 @@
 # kw-audit-references
 
-Deep audit of `.planning/reference/` docs, `AGENTS.md`, and `PROJECT.md` against the current codebase and milestone changes.
+Deep audit of `.planning/reference/` docs, `CLAUDE.md`, and `PROJECT.md` against the current codebase and milestone changes.
 
 ## What it does
 
@@ -14,7 +14,7 @@ Deep audit of `.planning/reference/` docs, `AGENTS.md`, and `PROJECT.md` against
 
 Manual-only. Invoke with `/kw-audit-references` or `/kw-audit-references --full`.
 
-- No args: audits reference docs + AGENTS.md + PROJECT.md
+- No args: audits reference docs + CLAUDE.md + PROJECT.md
 - `--full`: also audits phase artifacts (CONTEXT.md, PLAN.md)
 
 ## Output
