@@ -41,11 +41,12 @@ Busca estas señales en el texto del argumento:
 |-------------------|-------------|
 | "arregla", "fix", "bug", "no va", síntoma | Bug → `/gsd-debug` (investigar) o `/gsd-quick` (si fix claro) |
 | "añadir", "implementar", "nuevo", feature grande | Feature → fase completa con spec + discuss + plan + execute |
-| "explorar", "idea", "no sé si", "pensaba en" | Exploratorio → `/gsd-explore` primero |
+| "explorar", "idea", "no sé si", "pensaba en", "brainstorming" | Exploratorio → `/gsd-explore` primero |
 | "validar si", "ver si funciona", "es viable" | Feasibility → `/gsd-spike` |
 | "cómo se vería", "diseño", "layout", "UI" | UI abierta → `/gsd-sketch` |
 | "pequeño", "trivial", "rápido", fix 1-línea | Atajo → `/gsd-quick` o `/gsd-fast` |
 | "migrar", "cambiar X por Y" (scope acotado) | `/gsd-quick` con atomic commits |
+| "audit", "refactor", "mejorar calidad", "revisar stack", "tech debt" | Audit → `/kw-stack-audit` para detectar deuda; si hay mucho, fase dedicada de refactor |
 
 Propón pipeline concreto tipo:
 
@@ -129,7 +130,7 @@ Al terminar una fase de ejecución, aplicar según qué tocó:
 
 - `/gsd-complete-milestone` — archivar milestone
 - `/kw-audit-references` — auditar `.planning/reference/` contra código real
-- `/kw-stack-audit` — revisar tooling y base del proyecto
+- `/kw-stack-audit` — auditoría de calidad del stack (TS, formatter, tipos, secretos, tests)
 - `/kw-code-cleanup` — añadir fase de limpieza si hay deuda de código
 - `/gsd-cleanup` — archivar directorios de fases completadas
 - `/gsd-health` — diagnóstico y reparación del directorio `.planning/`
