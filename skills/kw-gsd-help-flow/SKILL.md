@@ -143,7 +143,7 @@ Al terminar una fase de ejecución, aplicar según qué tocó:
 - `/kw-check-migrations-supabase` — si tocó schema Supabase
 - `/gsd-verify-work` — UAT conversacional, siempre útil
 - `/gsd-validate-phase` — Nyquist validation retroactiva
-- `/gsd-code-review` + `/gsd-code-review-fix` — bugs y calidad
+- `/gsd-code-review` — bugs y calidad (el auto-fix está integrado en el comando, ya no hay `code-review-fix` separado)
 - `/gsd-ui-review` — si tocó frontend
 - `/gsd-eval-review` — si tocó AI/LLM
 - `/gsd-secure-phase` — si había threat model
