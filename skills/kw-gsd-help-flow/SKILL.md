@@ -164,7 +164,6 @@ Al terminar una fase de ejecución, aplicar según qué tocó:
 - **Sketch es caro en contexto** (carga 4 references de estilo). Resérvalo para decisiones de layout o flujo grandes, no para componentes pequeños.
 - **En la duda, modo investigación.** Regla del `CLAUDE.md` global — mejor preguntar de más que tocar código a ciegas.
 - **No hagas el pipeline completo siempre.** Añade cada paso solo si hay incertidumbre real en esa dimensión. Spec resuelve WHAT, spike resuelve feasibility, sketch resuelve UI, discuss resuelve HOW.
-- **Wrap-ups para persistir aprendizajes.** Si un spike o sketch enseñó algo reutilizable en fases futuras, `/gsd-spike-wrap-up` o `/gsd-sketch-wrap-up` lo empaqueta en skill de proyecto.
 
 ## Ejemplos de sesión híbrida
 
