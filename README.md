@@ -30,7 +30,6 @@ npx skills add kwazema/claude-skills --skill kw-stack-audit
 | [kw-skill-docs](./skills/kw-skill-docs/) | Generate a comprehensive catalog of all installed skills | `skill docs`, `documentar skills` |
 | [kw-audit-references](./skills/kw-audit-references/) | Audit .planning/reference/ docs against codebase with parallel agents | Manual: `/kw-audit-references` |
 | [kw-optimize-agents-project](./skills/kw-optimize-agents-project/) | Optimize AGENTS.md for minimal context footprint, scaffold reference docs | Manual: `/kw-optimize-agents-project` |
-| [kw-setup-release-pipeline](./skills/kw-setup-release-pipeline/) | One-shot install of Release Please + Conventional Commits + version injection for Vite+React | Manual: `/kw-setup-release-pipeline` |
 
 ## How skills work
 
