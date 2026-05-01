@@ -214,6 +214,21 @@ Pipeline propuesto:
 Se salta: toda la cadena de fase (es mantenimiento, no feature).
 ```
 
+## Atajos namespace (red de seguridad)
+
+Desde GSD 1.39.0 hay 6 meta-skills de namespace que enrutan dentro de su categoría. Útiles cuando no recuerdas el comando exacto pero sabes a qué área pertenece. Usar la chuleta de arriba sigue siendo más directo, pero estos sirven de fallback:
+
+| Namespace | Cubre |
+|-----------|-------|
+| `/gsd-ns-ideate` | explore, sketch, spike, spec, capture |
+| `/gsd-ns-workflow` | discuss, plan, execute, verify, phase, progress |
+| `/gsd-ns-context` | map-codebase, graphify, docs, learnings |
+| `/gsd-ns-review` | code-review, debug, audit, security, eval, ui |
+| `/gsd-ns-project` | new-milestone, milestone-summary, audits |
+| `/gsd-ns-manage` | config, workspace, workstreams, thread, update, ship, inbox |
+
+No reemplazan el pipeline narrativo (no enseñan cuándo usar `spike` vs `sketch`), solo descubren el comando concreto cuando lo tienes en la punta de la lengua.
+
 ---
 
 **Recordatorio:** esta skill NO ejecuta ningún comando GSD. Solo muestra la guía o propone el pipeline. Tú decides qué invocar.
