@@ -96,6 +96,13 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 | `/gsd-debug` | Bug real, investigar antes de tocar |
 | `/gsd-quick` | Fix concreto con orden clara, merece trazabilidad GSD |
 | `/gsd-fast` | Trivial de verdad — sin subagentes, sin ceremonia |
+| `/gsd-progress` | "¿Dónde estoy y qué toca?" — comando situacional unificado |
+| `/gsd-capture` | Capturar idea/todo/backlog/seed sin pensar dónde va (router unificado) |
+| `/gsd-map-codebase` | Análisis profundo del codebase → `.planning/codebase/` (STACK, ARCHITECTURE, CONVENTIONS, etc.) |
+| `/gsd-ingest-docs` | Bootstrap o merge de `.planning/` desde ADRs/PRDs/SPECs preexistentes |
+| `/gsd-undo` | Revert seguro de commits de fase/plan (con dependency checks) |
+| `/gsd-pause-work` | Handoff cuando paras mid-fase entre sesiones |
+| `/gsd-resume-work` | Restaurar contexto de sesión anterior |
 
 ## Atajos válidos
 
@@ -105,6 +112,18 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 - Fase pequeña con orden de acción → `/gsd-quick` directo
 - Fase que ya discutiste mentalmente → `/gsd-discuss-phase {N} --all`
 - Encadenar sin paradas → `/gsd-discuss-phase {N} --chain` (discuss → plan → execute)
+- Corrección puntual de fase futura → `/gsd-phase edit {N}` (no renumera, sin tocar plan ni execute)
+
+## Captura rápida (bypass del pipeline)
+
+Si solo quieres apuntar algo sin entrar al pipeline, `/gsd-capture` lo enruta solo:
+
+- "tarea pequeña pendiente" → todo
+- "idea para milestone futuro" → backlog
+- "nota efímera" → note
+- "trigger condicional para milestone X" → seed (se activa solo cuando se cumple la condición)
+
+Comando único, destino correcto. Útil para no romper el flujo de la conversación actual cuando aparece algo lateral.
 
 ## Cuándo saltar GSD entero
 
