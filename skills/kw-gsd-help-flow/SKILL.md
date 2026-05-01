@@ -52,7 +52,7 @@ Propón pipeline concreto tipo:
 
 ```
 Para "añadir soporte para exportador A3":
-1. /gsd-add-phase → crear fase formal
+1. /gsd-phase add → crear fase formal
 2. /gsd-spec-phase {N} → clarificar WHAT (qué formatos, qué clientes, reemplaza o convive)
 3. /gsd-spike a3-plugin-format → validar si tu exporter pluggable aguanta
 4. /gsd-sketch selector-exportador → (solo si el UI del selector no está decidido)
@@ -69,7 +69,7 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 
 ```
 /gsd-explore       → "no sé aún qué es esto ni si merece fase"
-/gsd-add-phase     → crear fase formal en ROADMAP
+/gsd-phase add     → crear fase formal en ROADMAP
 /gsd-spec-phase    → "¿QUÉ entrega la fase y por QUÉ?" (ambiguity score)
 /gsd-spike         → "antes de arquitecturar, ¿es viable técnicamente?"
 /gsd-sketch        → "antes de definir UI, ¿cómo se vería?" (mockups HTML)
@@ -83,7 +83,10 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 | Comando | Cuándo |
 |---------|--------|
 | `/gsd-explore` | Idea sin forma. Puede terminar en nota, todo, seed o nueva fase |
-| `/gsd-add-phase` | Ya sabes que merece fase. Crea entrada en ROADMAP |
+| `/gsd-phase add` | Ya sabes que merece fase. Crea entrada en ROADMAP |
+| `/gsd-phase edit {N}` | Corregir campos de una fase sin renumerar (título, depends-on, goal, success criteria) |
+| `/gsd-phase insert {N.1}` | Insertar fase decimal urgente entre fases existentes |
+| `/gsd-phase remove {N}` | Eliminar fase futura del roadmap (renumera las siguientes) |
 | `/gsd-spec-phase {N}` | Fase creada pero WHAT ambiguo. Produce SPEC.md bloqueado |
 | `/gsd-spike {tema}` | Duda técnica binaria: "¿esto funciona?" |
 | `/gsd-sketch {tema}` | Decisión de UI/layout con 2-3 variantes que comparar |
@@ -160,7 +163,7 @@ Señales detectadas: "quiero que" = feature, "al subir" = toca flow existente, "
 Pipeline propuesto:
 1. /gsd-explore detección-facturas-duplicadas
    → Decidir criterio de duplicado (CIF+fecha+total? hash PDF? solicitar confirmación?)
-2. /gsd-add-phase "Detección de facturas duplicadas"
+2. /gsd-phase add "Detección de facturas duplicadas"
 3. /gsd-spec-phase {N}
    → WHAT/WHY: ¿bloqueo duro o solo aviso? ¿qué datos de duplicado mostrar?
 4. /gsd-sketch aviso-duplicados
