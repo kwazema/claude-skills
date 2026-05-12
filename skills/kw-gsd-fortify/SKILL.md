@@ -1,11 +1,10 @@
 ---
 name: kw-gsd-fortify
 description: >
-  Fortify a GSD phase with deep codebase analysis before execution. Enriches CONTEXT.md
-  and annotates PLAN.md files with actionable implementation guidance so the executor
-  produces correct code on the first pass. Manual-only — invoke ONLY when the user
-  explicitly says "fortify phase", "fortify", "fortificar fase", or "/kw-gsd-fortify".
-  Never auto-trigger. Requires Get Shit Done (GSD) workflow.
+  Fortify a GSD phase before execution: enriches CONTEXT.md and annotates PLAN.md with
+  codebase-grounded implementation guidance for the executor. Manual-only — invoke only
+  when the user says "fortify phase", "fortificar fase", or "/kw-gsd-fortify".
+  Never auto-trigger. Requires GSD.
 ---
 
 # Fortify Phase

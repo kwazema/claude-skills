@@ -1,10 +1,9 @@
 ---
 name: kw-cubic
 description: >
-  Process cubic.ai code review analysis and apply only the changes that make sense
-  according to the project's architecture. Invoke when the user pastes cubic.ai output.
-  Triggers: "cubic", "cubic review", "cubic analysis", "review de cubic".
-  Requires Get Shit Done (GSD) workflow.
+  Process cubic.ai code review and apply only the changes that fit the project's
+  architecture. Invoke when the user pastes cubic.ai output.
+  Triggers: "cubic", "cubic review", "review de cubic". Requires GSD workflow.
 argument-hint: [cubic.ai output]
 disable-model-invocation: true
 ---

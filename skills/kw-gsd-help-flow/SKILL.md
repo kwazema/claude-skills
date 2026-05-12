@@ -2,11 +2,9 @@
 name: kw-gsd-help-flow
 description: >
   Chuleta y guía del pipeline GSD. Modo híbrido: sin argumento muestra el flujo completo
-  (explore → spec-phase → spike → sketch → discuss → plan → execute) con disparadores y
-  atajos; con argumento analiza la tarea descrita y propone el pipeline específico para
-  ella. Úsala cuando el usuario diga "cómo empiezo", "qué comando uso", "por dónde empiezo",
-  "flujo gsd", "chuleta gsd", "ayuda gsd", "/kw-gsd-help-flow", o necesite un recordatorio
-  del pipeline. Manual-only, nunca auto-trigger.
+  (explore → spec-phase → spike → sketch → discuss → plan → execute); con argumento
+  analiza la tarea y propone el pipeline específico. Triggers: "cómo empiezo",
+  "flujo gsd", "chuleta gsd", "ayuda gsd". Manual-only, nunca auto-trigger.
 ---
 
 # GSD Help Flow

@@ -1,6 +1,6 @@
 ---
 name: kw-gsd-phase-handoff
-description: Prepare a clean chat for a subsequent `gsd-execute-phase` by rebuilding GSD phase context safely first. Use when the user says "gsd phase handoff", "te voy a pasar el execute", "before execute-phase", "human in the loop", or wants to continue a phase from a fresh chat before invoking `gsd-execute-phase`. Read the handoff context first, surface only material doubts, inconsistencies, or out-of-scope improvements, and ask targeted questions before execution continues.
+description: Prepare a clean chat for a subsequent `gsd-execute-phase` by rebuilding GSD phase context safely first. Triggers: "gsd phase handoff", "te voy a pasar el execute", "before execute-phase", "human in the loop".
 argument-hint: [upcoming gsd-execute-phase request, phase number, or handoff context]
 ---
 

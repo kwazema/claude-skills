@@ -2,9 +2,9 @@
 name: kw-skill-docs
 description: >
   Generate a comprehensive document listing all installed skills (local and built-in)
-  with their activation type, arguments, dependencies, and compatibility notes.
-  Use when the user says "skill docs", "document skills", "list all skills",
-  "documentar skills", "catalogo de skills". Run monthly or after installing new skills.
+  with activation type, arguments, dependencies, and compatibility.
+  Triggers: "skill docs", "document skills", "documentar skills", "catalogo de skills".
+  Run monthly or after installing new skills.
 disable-model-invocation: true
 ---
 

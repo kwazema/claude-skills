@@ -2,14 +2,11 @@
 name: kw-stack-audit
 description: >
   Audit frontend project quality configuration (TypeScript, formatter, Supabase types,
-  library consistency, type safety in code, hardcoded constants/secrets, testing).
-  Use when the user wants to review or improve a project's foundation, detect tooling
-  tech debt, prepare a project for TDD, or bootstrap strict config from day one.
-  Triggers: "stack audit", "audit", "audit project", "review stack", "strict TypeScript",
-  "add Biome", "detect inconsistencies", "improve project base",
-  "revisar el stack", "configurar TypeScript estricto", "anadir Biome",
-  "detectar inconsistencias", "mejorar la base del proyecto".
-  Presents findings first and waits for explicit approval before applying changes.
+  library consistency, secrets, testing). Use when the user wants to review a project's
+  foundation, detect tooling tech debt, or bootstrap strict config from day one.
+  Triggers: "stack audit", "audit project", "strict TypeScript", "add Biome",
+  "revisar el stack", "configurar TypeScript estricto", "detectar inconsistencias".
+  Presents findings first and waits for approval before applying changes.
 ---
 
 # Stack Audit

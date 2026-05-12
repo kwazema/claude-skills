@@ -3,11 +3,8 @@ name: kw-vite-checker-setup
 description: >
   Install vite-plugin-checker (TypeScript errors) and configure Vite 8's native
   server.forwardConsole (runtime errors) so all dev errors appear in the terminal.
-  Falls back to vite-plugin-terminal for Vite < 8. Use when setting up a Vite
-  project, adding error reporting to dev server, or when the user wants errors
-  visible without opening browser devtools. Triggers: "vite checker",
-  "install vite checker", "configurar vite checker", "errores en terminal",
-  "vite error reporting", "forward console".
+  Falls back to vite-plugin-terminal for Vite < 8. Triggers: "vite checker",
+  "configurar vite checker", "errores en terminal", "forward console".
 ---
 
 # Vite Checker Setup

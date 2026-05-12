@@ -1,9 +1,8 @@
 ---
 name: kw-update-skills
 description: >
-  Update external third-party skills to their latest versions. Use when the user says
-  "update skills", "actualizar skills", "actualiza las skills externas",
-  "hay updates de skills", "check for skill updates", or wants to update installed skills.
+  Update external third-party skills to their latest versions. Triggers: "update skills",
+  "actualizar skills", "hay updates de skills", "check for skill updates".
 ---
 
 # Update External Skills

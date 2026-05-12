@@ -1,6 +1,6 @@
 ---
 name: kw-optimize-agents-project
-description: "Optimize AGENTS.md/CLAUDE.md for minimal context footprint. Moves verbose sections to .planning/reference/ or .planning/codebase/, creates missing reference docs with templates, and ensures the project instructions file loads only what every conversation needs. Manual-only."
+description: "Optimize AGENTS.md/CLAUDE.md for minimal context footprint: move verbose sections to .planning/reference/ or .planning/codebase/, create missing reference docs from templates. Manual-only."
 ---
 
 # Optimize Agents Project
