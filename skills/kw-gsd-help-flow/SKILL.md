@@ -94,13 +94,15 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 | `/gsd-debug` | Bug real, investigar antes de tocar |
 | `/gsd-quick` | Fix concreto con orden clara, merece trazabilidad GSD |
 | `/gsd-fast` | Trivial de verdad — sin subagentes, sin ceremonia |
-| `/gsd-progress` | "¿Dónde estoy y qué toca?" — comando situacional unificado |
-| `/gsd-capture` | Capturar idea/todo/backlog/seed sin pensar dónde va (router unificado) |
-| `/gsd-map-codebase` | Análisis profundo del codebase → `.planning/codebase/` (STACK, ARCHITECTURE, CONVENTIONS, etc.) |
+| `/gsd-progress` | "¿Dónde estoy y qué toca?" — comando situacional. `--do "{tarea}"` ejecuta directo, `--next` propone siguiente paso |
+| `/gsd-capture` | Capturar idea/todo/backlog/seed sin pensar dónde va. Flags explícitos: `--note`, `--seed`, `--todo`, `--list` |
+| `/gsd-map-codebase` | Análisis profundo → `.planning/codebase/`. `--fast` para barrido rápido, `--query "{pregunta}"` para consulta puntual |
+| `/gsd-mvp-phase {N}` | Cortar la fase como MVP vertical (user story + SPIDR splitting) antes de plan-phase. Útil para features grandes que se pueden entregar en cortes verticales |
 | `/gsd-ingest-docs` | Bootstrap o merge de `.planning/` desde ADRs/PRDs/SPECs preexistentes |
 | `/gsd-undo` | Revert seguro de commits de fase/plan (con dependency checks) |
 | `/gsd-pause-work` | Handoff cuando paras mid-fase entre sesiones |
 | `/gsd-resume-work` | Restaurar contexto de sesión anterior |
+| `/gsd-surface` | Ajustar qué skills GSD están activos sin reinstalar (profiles + clusters) |
 
 ## Atajos válidos
 
@@ -116,12 +118,13 @@ Saltar spike si confías en el formato. Saltar sketch si la UI ya está.
 
 Si solo quieres apuntar algo sin entrar al pipeline, `/gsd-capture` lo enruta solo:
 
-- "tarea pequeña pendiente" → todo
-- "idea para milestone futuro" → backlog
-- "nota efímera" → note
-- "trigger condicional para milestone X" → seed (se activa solo cuando se cumple la condición)
+- "tarea pequeña pendiente" → `--todo`
+- "idea para milestone futuro" → `--backlog`
+- "nota efímera" → `--note`
+- "trigger condicional para milestone X" → `--seed` (se activa solo cuando se cumple la condición)
+- "lístame lo capturado" → `--list`
 
-Comando único, destino correcto. Útil para no romper el flujo de la conversación actual cuando aparece algo lateral.
+Sin flag, el router infiere por contenido. Útil para no romper el flujo cuando aparece algo lateral.
 
 ## Cuándo saltar GSD entero
 
@@ -154,6 +157,14 @@ Al terminar una fase de ejecución, aplicar según qué tocó:
 - `/kw-code-cleanup` — añadir fase de limpieza si hay deuda de código
 - `/gsd-cleanup` — archivar directorios de fases completadas
 - `/gsd-health` — diagnóstico y reparación del directorio `.planning/`
+
+## Mantenimiento / drift
+
+- `/gsd-update` — actualizar GSD a la última versión (chequea npm, muestra changelog, pide confirmación)
+- `/gsd-update --sync` — alinear skills GSD entre runtimes (útil cuando tienes Claude Code + Codex + Gemini en paralelo)
+- `/gsd-update --reapply` — re-fundir patches locales después de un update (three-way merge contra pristine)
+- `/gsd-surface` — activar/desactivar clusters de skills sin reinstalar. `list`/`status` para ver qué está activo, `profile <name>` para cambiar perfil, `disable <cluster>`/`enable <cluster>` para granular (clusters: `core_loop`, `audit_review`, `milestone`, `research_ideate`, `workspace_state`, `docs`, `ui`, `ai_eval`, `ns_meta`, `utility`), `reset` para volver al perfil de instalación
+- `/gsd-health --context` — guard de utilización de ventana (warning a 60 %, crítico a 70 %). Cuando notes que la sesión va cargada, mírala antes de saltar a `/gsd-thread`
 
 ## Tips prácticos
 
@@ -214,7 +225,7 @@ Se salta: toda la cadena de fase (es mantenimiento, no feature).
 
 ## Atajos namespace (red de seguridad)
 
-Desde GSD 1.39.0 hay 6 meta-skills de namespace que enrutan dentro de su categoría. Útiles cuando no recuerdas el comando exacto pero sabes a qué área pertenece. Usar la chuleta de arriba sigue siendo más directo, pero estos sirven de fallback:
+Desde GSD 1.41.0 hay 6 meta-skills de namespace que enrutan dentro de su categoría. Útiles cuando no recuerdas el comando exacto pero sabes a qué área pertenece. Usar la chuleta de arriba sigue siendo más directo, pero estos sirven de fallback:
 
 | Namespace | Cubre |
 |-----------|-------|
@@ -226,6 +237,30 @@ Desde GSD 1.39.0 hay 6 meta-skills de namespace que enrutan dentro de su categor
 | `/gsd-ns-manage` | config, workspace, workstreams, thread, update, ship, inbox |
 
 No reemplazan el pipeline narrativo (no enseñan cuándo usar `spike` vs `sketch`), solo descubren el comando concreto cuando lo tienes en la punta de la lengua.
+
+## Comandos consolidados (1.41.0 cleanup)
+
+Desde 1.41 GSD redujo 86 → 59 skills absorbiendo microcomandos como flags de su padre. Si tu memoria devuelve un comando que ya no existe, busca el equivalente:
+
+| Antes | Ahora |
+|-------|-------|
+| `/gsd-do "{tarea}"` | `/gsd-progress --do "{tarea}"` |
+| `/gsd-next` | `/gsd-progress --next` |
+| `/gsd-note` | `/gsd-capture --note` |
+| `/gsd-plant-seed` | `/gsd-capture --seed` |
+| `/gsd-add-todo` | `/gsd-capture --todo` |
+| `/gsd-check-todos` | `/gsd-capture --list` |
+| `/gsd-add-backlog` | `/gsd-capture --backlog` |
+| `/gsd-scan` | `/gsd-map-codebase --fast` |
+| `/gsd-intel` | `/gsd-map-codebase --query` |
+| `/gsd-sync-skills` | `/gsd-update --sync` |
+| `/gsd-reapply-patches` | `/gsd-update --reapply` |
+| `/gsd-code-review-fix` | `/gsd-code-review --fix` |
+| `/gsd-sketch-wrap-up` | `/gsd-sketch --wrap-up` |
+| `/gsd-spike-wrap-up` | `/gsd-spike --wrap-up` |
+| `/gsd-add-phase` / `insert` / `remove` / `edit` | `/gsd-phase add|insert|remove|edit` |
+| `/gsd-new-workspace` / `list` / `remove` | `/gsd-workspace new|list|remove` |
+| `/gsd-settings-advanced` / `integrations` / `set-profile` | `/gsd-config` |
 
 ---
 
