@@ -4,11 +4,14 @@ Claude Code skills for frontend development workflows. Focused on TypeScript, Re
 
 ## Install
 
-```bash
+
 # All skills
+```bash
 npx skills add kwazema/claude-skills
+```
 
 # Single skill
+```bash
 npx skills add kwazema/claude-skills --skill kw-stack-audit
 ```
 
