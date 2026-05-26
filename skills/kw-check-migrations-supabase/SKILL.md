@@ -1,6 +1,11 @@
 ---
 name: kw-check-migrations-supabase
-description: Review pending Supabase changes (migrations + edge functions), explain each one, and deploy after user confirmation. Triggers: "push migrations", "db push", "aplicar migraciones", "check migrations", "deploy functions", "desplegar funciones", "check edge functions", "check supabase".
+description: >
+  Review pending Supabase changes (migrations + edge functions),
+  explain each one, and deploy after user confirmation.
+  Triggers: "push migrations", "db push", "aplicar migraciones",
+  "check migrations", "deploy functions", "desplegar funciones",
+  "check edge functions", "check supabase".
 ---
 
 # Check Migrations & Edge Functions — Supabase
