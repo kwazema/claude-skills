@@ -30,6 +30,7 @@ npx skills add kwazema/claude-skills --skill kw-stack-audit
 | [kw-gsd-phase-handoff](./skills/kw-gsd-phase-handoff/) | Prepare a clean chat for `gsd-execute-phase` and ask only material handoff questions | `te voy a pasar el execute`, `phase handoff` |
 | [kw-gsd-help-flow](./skills/kw-gsd-help-flow/) | Agente de ruteo del pipeline GSD (4 modos): chuleta, ruteo por tarea, temático (`skills para X`), deep-dive (`explícame gsd-X`) | `cómo empiezo`, `flujo gsd`, `skills para`, `explícame gsd-` |
 | [kw-cubic](./skills/kw-cubic/) | Process cubic.ai code review and apply changes that fit the architecture | `cubic`, `cubic review` |
+| [kw-pr-review](./skills/kw-pr-review/) | Read bot reviews from a GitHub PR (Codex, CodeRabbit, Sourcery), evaluate findings against the architecture, apply only the valid ones | `pr review`, `codex review`, `revisar pr`, `aplicar findings` |
 | [kw-skill-docs](./skills/kw-skill-docs/) | Generate a comprehensive catalog of all installed skills | `skill docs`, `documentar skills` |
 | [kw-audit-references](./skills/kw-audit-references/) | Audit .planning/reference/ docs against codebase with parallel agents | Manual: `/kw-audit-references` |
 | [kw-optimize-agents-project](./skills/kw-optimize-agents-project/) | Optimize AGENTS.md for minimal context footprint, scaffold reference docs | Manual: `/kw-optimize-agents-project` |
