@@ -1,20 +1,21 @@
 # kw-audit-references
 
-Deep audit of `.planning/reference/` docs, `CLAUDE.md`, and `PROJECT.md` against the current codebase and milestone changes.
+Deep audit of `.planning/reference/` + `.planning/codebase/` docs, `CLAUDE.md`, and `PROJECT.md` against the current codebase and milestone changes.
 
 ## What it does
 
 1. Reads milestone context (STATE.md, ROADMAP.md, phase summaries) to build a changelog
-2. Spawns parallel agents — one per reference document — to check every claim against actual code
+2. Spawns parallel agents — one per living doc (reference + codebase + PROJECT + CLAUDE) — to check every claim against actual code
 3. Each agent runs two passes: textual analysis (paths, functions, status claims) and behavioral verification (does the code do what the doc says?)
 4. Parent agent synthesizes findings, discards false positives, and generates a scored report
 5. Presents an interactive summary where you decide: fix / skip / discuss for each finding
 
 ## Triggers
 
-Manual-only. Invoke with `/kw-audit-references` or `/kw-audit-references --full`.
+Manual-only. Invoke with `/kw-audit-references`, `/kw-audit-references --reference-only`, or `/kw-audit-references --full`.
 
-- No args: audits reference docs + CLAUDE.md + PROJECT.md
+- No args: audits reference docs + codebase docs + CLAUDE.md + PROJECT.md
+- `--reference-only`: skip `.planning/codebase/` (pre-existing narrow scope)
 - `--full`: also audits phase artifacts (CONTEXT.md, PLAN.md)
 
 ## Output

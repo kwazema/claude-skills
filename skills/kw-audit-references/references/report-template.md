@@ -7,7 +7,7 @@ Template for the `REFERENCE-AUDIT-v{milestone}.md` output file.
 
 **Date:** {YYYY-MM-DD}
 **Milestone:** v{milestone}
-**Scope:** {default | full (includes phase artifacts)}
+**Scope:** {default (reference + codebase) | reference-only | full (adds phase artifacts)}
 
 ---
 

@@ -1,8 +1,17 @@
 # Agent Instructions — Reference Doc Auditor
 
-You are auditing a single reference document against the current codebase. You receive:
+You are auditing a single living document against the current codebase. You receive:
 - **The document** to audit (full content)
 - **The milestone changelog** (what changed recently)
+
+## Document types
+
+Your document is one of:
+- **`.planning/reference/*.md`** — hand-written living docs (lifecycle, business rules, integrations, audit logs). Drift here is usually a stale claim about behavior or an integration.
+- **`.planning/codebase/*.md`** — GSD-generated map of the code. Drift here is usually structural: a new file/service missing from `STRUCTURE.md`, a resolved item still open in `CONCERNS.md`, a changed format in `INTEGRATIONS.md`, a new pattern absent from `CONVENTIONS.md`.
+- **`PROJECT.md` / `CLAUDE.md`** — project charter and agent instructions.
+
+**Relevance first.** Before hunting findings, judge how exposed this doc is to *this* changelog and tag it `high` / `medium` / `low` / `none`. Do NOT manufacture findings for a low/none doc — "still accurate, no change needed" is a valid, valuable verdict. `STACK.md`, `TESTING.md` and `MULTI-INSTANCE-ARCHITECTURE.md` are usually low unless the milestone changed deps, the validation strategy, or deploy/isolation respectively.
 
 ## Your two passes
 

@@ -1,11 +1,11 @@
 ---
 name: kw-audit-references
-description: "Deep audit of .planning/reference/ docs and PROJECT.md against current codebase and milestone changes. Manual-only — invoke when closing a milestone or when reference docs may be stale. Generates REFERENCE-AUDIT-v{milestone}.md report."
+description: "Deep audit of .planning/reference/ + .planning/codebase/ docs, CLAUDE.md and PROJECT.md against current codebase and milestone changes. Manual-only — invoke when closing a milestone or when living docs may be stale. Generates REFERENCE-AUDIT-v{milestone}.md report."
 ---
 
 # Audit References
 
-Systematic audit of living reference documentation. Reads milestone context, spawns parallel agents to analyze each document against current code, and produces a scored report with interactive Q&A.
+Systematic audit of living documentation — both the hand-written `.planning/reference/` docs (lifecycle, business rules, integrations) and the GSD-generated `.planning/codebase/` analysis (architecture, structure, concerns, conventions). Reads milestone context, spawns parallel agents to analyze each document against current code, and produces a scored report with interactive Q&A.
 
 ## When to Use
 
@@ -13,7 +13,8 @@ Manual-only. Invoke explicitly with `/kw-audit-references`. The system will remi
 
 ## Arguments
 
-- No args: full audit of reference docs + PROJECT.md
+- No args: audit `.planning/reference/` + `.planning/codebase/` docs + PROJECT.md + CLAUDE.md
+- `--reference-only`: narrow scope — skip `.planning/codebase/` (the pre-existing behavior)
 - `--full`: also audit phase artifacts (CONTEXT.md, PLAN.md) from the current milestone
 
 ## Workflow
@@ -30,9 +31,12 @@ Build a changelog: new services, new transitions, changed integrations, new comp
 ### 2. Inventory documents to audit
 
 **Always audited:**
-- All `.planning/reference/*.md` files
+- All `.planning/reference/*.md` files — hand-written living docs (lifecycle, business rules, integrations, audit logs)
+- All `.planning/codebase/*.md` files — GSD-generated analysis (ARCHITECTURE, STRUCTURE, CONVENTIONS, STACK, CONCERNS, INTEGRATIONS, TESTING). **Unless `--reference-only` is passed.** These describe the code directly, so the changelog often makes them drift first — e.g. a new edge function missing from STRUCTURE, a resolved item still listed in CONCERNS, a marker format changed in INTEGRATIONS.
 - `PROJECT.md` (`.planning/PROJECT.md`)
 - `CLAUDE.md` (repo root, if exists) — verify stack versions, commands, conventions match package.json, tsconfig, biome.json
+
+**Relevance scoring (codebase docs especially).** Not every doc is equally exposed to a given milestone. Each agent must tag its document with a relevance level (`high` / `medium` / `low` / `none`) for *this* changelog and must NOT manufacture findings for low/none docs — confirming "still accurate, no change needed" is a valid, valuable result. Typical low-relevance unless the milestone touched them: `STACK.md` (only if deps/versions changed), `TESTING.md` (only if the validation strategy changed), `MULTI-INSTANCE-ARCHITECTURE.md` (only if deploy/isolation changed).
 
 **With `--full` flag, also audit:**
 - `*-CONTEXT.md` and `*-PLAN.md` from phases in the current milestone
@@ -40,7 +44,7 @@ Build a changelog: new services, new transitions, changed integrations, new comp
 
 ### 3. Spawn parallel analysis agents
 
-Launch one agent per reference document. Each agent receives:
+Launch one agent per document (every `reference/` + `codebase/` doc plus PROJECT.md and CLAUDE.md). Each agent receives:
 - The document to audit
 - The milestone changelog from step 1
 - Instructions from `references/agent-instructions.md`
