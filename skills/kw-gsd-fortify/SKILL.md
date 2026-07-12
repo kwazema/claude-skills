@@ -13,11 +13,11 @@ Deep codebase analysis that prepares a GSD phase for execution. Enriches CONTEXT
 
 ## When to Use
 
-After `/gsd:plan-phase` and before `/gsd:execute-phase`. Manual-only — only invoke when the user explicitly requests it.
+After `/gsd-plan-phase` and before `/gsd-execute-phase`. Manual-only — only invoke when the user explicitly requests it.
 
 Recommended flow:
 ```
-/gsd:discuss-phase {X} → /gsd:plan-phase {X} → /kw-gsd-fortify {X} → /clear → /gsd:execute-phase {X}
+/gsd-discuss-phase {X} → /gsd-plan-phase {X} → /kw-gsd-fortify {X} → /clear → /gsd-execute-phase {X}
 ```
 
 ## Arguments

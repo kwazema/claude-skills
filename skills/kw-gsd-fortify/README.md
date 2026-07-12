@@ -31,6 +31,6 @@ Claude will analyze the codebase against the phase plans, present gaps and risks
 
 `fortify phase`, `fortify`, `fortificar fase`
 
-**Requires:** [Get Shit Done (GSD)](https://github.com/get-shit-done-ai/get-shit-done) workflow.
+**Requires:** [GSD Core](https://github.com/open-gsd/gsd-core) workflow.
 
 See [SKILL.md](./SKILL.md) for the full workflow.

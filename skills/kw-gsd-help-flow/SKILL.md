@@ -7,7 +7,8 @@ description: >
   (3) con query temática ("skills para X"), filtra 2-4 skills con criterio;
   (4) con "explícame gsd-X" o "cómo cerrar Z", lee la skill GSD real y resume argumentos y uso.
   Triggers: "cómo empiezo", "flujo gsd", "chuleta gsd", "ayuda gsd",
-  "skills para", "cómo cerrar", "explícame gsd-". Manual-only, nunca auto-trigger.
+  "skills para", "cómo cerrar", "explícame gsd-", "gsd core", "qué cambió en gsd".
+  Manual-only, nunca auto-trigger.
 ---
 
 # GSD Help Flow
@@ -30,6 +31,13 @@ Este archivo es **solo el MAPA**. La fuente autoritativa vive en `~/.claude/skil
 - **Profundiza leyendo la skill real** cuando: piden argumentos/flags concretos, casos límite, modo 4 ("explícame gsd-X"), o la respuesta depende de detalles que cambian entre releases.
 - **Basta con el mapa** cuando: piden "qué skills existen para X", cadenas de flujo (post-fase, cierre milestone), exploración sin saber el comando exacto.
 
+## GSD Core (desde julio 2026)
+
+GSD se llama ahora **GSD Core** (`@opengsd/gsd-core`, repo `open-gsd/gsd-core`): continuación comunitaria tras la salida del creador original. El pipeline, los comandos `/gsd-*` y el formato `.planning/` NO cambian; el versionado se reseteó (1.6.x nueva > 1.42.x legacy). Updates con `/gsd-update` normal (`--next` para canal RC).
+
+- **Si la consulta trata del cambio, la migración o las novedades** (capabilities, coverage-UAT, drift precheck, MemPalace…): lee `references/gsd-core.md` de esta skill.
+- Para todo lo demás, este mapa y las skills reales siguen siendo la fuente.
+
 ────────────────────────────────────────────────────────────
 
 ## Pipeline canónico
@@ -49,7 +57,7 @@ Este archivo es **solo el MAPA**. La fuente autoritativa vive en `~/.claude/skil
 
 `ui-phase` y `ai-integration-phase` no reemplazan `discuss-phase` — la complementan. Sus outputs alimentan el `plan-phase` posterior.
 
-## Mapa de skills (67)
+## Mapa de skills (69)
 
 **Inicio:** `gsd-new-project` (PROJECT.md + context) · `gsd-new-milestone` (abrir cycle) · `gsd-import` (plans externos) · `gsd-ingest-docs` (bootstrap desde ADRs/PRDs)
 
@@ -70,6 +78,8 @@ Este archivo es **solo el MAPA**. La fuente autoritativa vive en `~/.claude/skil
 **Threads/workspace/parallel:** `gsd-thread` (cross-sesión) · `gsd-workspace` (sandbox) · `gsd-workstreams` (paralelo) · `gsd-pause-work` · `gsd-resume-work`
 
 **Codebase intel:** `gsd-map-codebase` (`--fast`, `--query`) · `gsd-graphify` (knowledge graph) · `gsd-docs-update` (docs verificados)
+
+**Memoria cross-proyecto (opt-in, MemPalace):** `gsd-mempalace-capture` · `gsd-mempalace-recall`
 
 **Captura rápida:** `gsd-capture` (router por flags) · `gsd-fast` (trivial inline) · `gsd-quick` (fix con atomic commits)
 
@@ -148,7 +158,7 @@ Si tu memoria devuelve un comando que ya no existe:
 
 | Antes | Ahora |
 |-------|-------|
-| `/gsd-do "{t}"` / `/gsd-next` | `/gsd-progress --do|--next` |
+| `/gsd-do "{t}"` / `/gsd-next` | `/gsd-progress --do|--next` (en GSD Core 1.7+ `/gsd-next` vuelve como smart entry) |
 | `/gsd-note`/`-plant-seed`/`-add-todo`/`-check-todos`/`-add-backlog` | `/gsd-capture --note|--seed|--todo|--list|--backlog` |
 | `/gsd-scan` / `/gsd-intel` | `/gsd-map-codebase --fast|--query` |
 | `/gsd-sync-skills` / `/gsd-reapply-patches` | `/gsd-update --sync|--reapply` |

@@ -26,6 +26,6 @@ Claude will read the project context, evaluate each suggestion from cubic.ai aga
 
 `cubic`, `cubic review`, `cubic analysis`, `review de cubic`
 
-**Requires:** [Get Shit Done (GSD)](https://github.com/get-shit-done-ai/get-shit-done) workflow and a [cubic.ai](https://cubic.ai) account.
+**Requires:** [GSD Core](https://github.com/open-gsd/gsd-core) workflow and a [cubic.ai](https://cubic.ai) account.
 
 See [SKILL.md](./SKILL.md) for the full workflow.

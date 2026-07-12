@@ -95,7 +95,7 @@ After all decisions, apply approved fixes to the reference docs.
 ### 7. Optional: suggest follow-up
 
 If findings are substantial (>5 fixes needed), suggest:
-"This audit found enough issues for a cleanup phase. You can use the report as input for `/gsd:plan-phase` or `/kw-code-cleanup`."
+"This audit found enough issues for a cleanup phase. You can use the report as input for `/gsd-plan-phase` or `/kw-code-cleanup`."
 
 ## Key Principles
 

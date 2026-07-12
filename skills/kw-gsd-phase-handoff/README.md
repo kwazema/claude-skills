@@ -27,6 +27,6 @@ Claude will rebuild the phase context, flag only material issues, and leave the 
 
 `gsd phase handoff`, `te voy a pasar el execute`, `before execute-phase`, `phase handoff`, `human in the loop`
 
-**Requires:** [Get Shit Done (GSD)](https://github.com/get-shit-done-ai/get-shit-done) workflow.
+**Requires:** [GSD Core](https://github.com/open-gsd/gsd-core) workflow.
 
 See [SKILL.md](./SKILL.md) for the full workflow.

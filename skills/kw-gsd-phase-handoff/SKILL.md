@@ -56,5 +56,5 @@ Respond in this order:
 ## Routing
 
 - If the user wants structured clarification before planning, prefer `gsd-discuss-phase`.
-- If the user wants assumptions surfaced before planning, prefer `gsd-list-phase-assumptions`.
+- If the user wants assumptions surfaced before planning, prefer `gsd-discuss-phase {phase} --assumptions`.
 - If the handoff is clear and the user proceeds with execution, continue with `gsd-execute-phase`.

@@ -25,6 +25,6 @@ Claude will run diagnostics, show you a summary, and create a GSD phase with the
 
 `code cleanup`, `cleanup phase`, `add cleanup phase`, `limpieza de codigo`
 
-**Requires:** [Get Shit Done (GSD)](https://github.com/get-shit-done-ai/get-shit-done) workflow.
+**Requires:** [GSD Core](https://github.com/open-gsd/gsd-core) workflow.
 
 See [SKILL.md](./SKILL.md) for the full workflow.

@@ -35,6 +35,6 @@ Only Codex P1 findings, analysis only — shows the plan but applies nothing.
 
 `pr review`, `revisar pr`, `codex review`, `coderabbit review`, `review del pr`, `aplicar findings`, `/kw-pr-review`
 
-**Requires:** [`gh` CLI](https://cli.github.com) authenticated against the repo's GitHub account. Optionally [Get Shit Done (GSD)](https://github.com/get-shit-done-ai/get-shit-done) for `.planning/` context.
+**Requires:** [`gh` CLI](https://cli.github.com) authenticated against the repo's GitHub account. Optionally [GSD Core](https://github.com/open-gsd/gsd-core) for `.planning/` context.
 
 See [SKILL.md](./SKILL.md) for the full workflow and [references/bot-formats.md](./references/bot-formats.md) for per-bot parsing rules.

@@ -10,11 +10,12 @@ npx skills add kwazema/claude-skills --skill kw-gsd-help-flow
 
 ## What it does
 
-- **Modo chuleta** (`/kw-gsd-help-flow`): pipeline canónico + mapa de las 67 skills GSD clasificadas por intent
+- **Modo chuleta** (`/kw-gsd-help-flow`): pipeline canónico + mapa de las 69 skills GSD clasificadas por intent
 - **Modo ruteo** (`/kw-gsd-help-flow {tarea}`): detecta señales en la descripción y propone qué comandos invocar, en qué orden, y qué saltar
 - **Modo temático** (`/kw-gsd-help-flow skills para X`): filtra 2-4 skills relevantes con criterio de cuál elegir
 - **Modo deep-dive** (`/kw-gsd-help-flow explícame gsd-X` o `cómo cerrar Z`): lee `~/.claude/skills/gsd-{nombre}/SKILL.md` y resume argumentos, flags, comportamiento y casos de uso
 - No ejecuta nada — solo orienta. Manual-only, nunca auto-trigger
+- Incluye `references/gsd-core.md`: referencia de la transición a GSD Core (jul-2026) — rename, migración, novedades y watch-outs
 
 ## Examples
 
@@ -42,6 +43,6 @@ Lee la skill real instalada y resume propósito, argumentos, cuándo usarlo, y d
 
 `cómo empiezo`, `qué comando uso`, `por dónde empiezo`, `flujo gsd`, `chuleta gsd`, `ayuda gsd`, `skills para`, `qué uso para`, `cómo cerrar`, `explícame gsd-`, `/kw-gsd-help-flow`
 
-**Requires:** [Get Shit Done (GSD)](https://github.com/get-shit-done-ai/get-shit-done) workflow.
+**Requires:** [GSD Core](https://github.com/open-gsd/gsd-core) workflow (antes Get Shit Done; instalar con `npx @opengsd/gsd-core@latest`).
 
 See [SKILL.md](./SKILL.md) for the full workflow.

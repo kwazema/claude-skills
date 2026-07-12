@@ -65,7 +65,7 @@ Ask: "Confirm this phase? You can remove tasks that don't apply."
 After user confirms, run:
 
 ```bash
-node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" phase add "Code Cleanup: technical cleanup vX.Y"
+node "$HOME/.claude/gsd-core/bin/gsd-tools.cjs" phase add "Code Cleanup: technical cleanup vX.Y"
 ```
 
 Replace `vX.Y` with the actual milestone version from Step 1.
@@ -79,5 +79,5 @@ The CLI will:
 
 Tell the user:
 - Phase number and name that was added
-- Remind them to plan it with `/gsd:plan-phase N` when feature phases are done
-- Remind them it won't execute until they explicitly run `/gsd:execute-phase N`
+- Remind them to plan it with `/gsd-plan-phase N` when feature phases are done
+- Remind them it won't execute until they explicitly run `/gsd-execute-phase N`

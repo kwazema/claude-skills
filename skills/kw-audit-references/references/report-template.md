@@ -89,7 +89,7 @@ Non-blocking improvements noticed during audit. Not errors — optional enhancem
 ## Follow-up
 
 {If >5 findings:}
-This audit found enough issues to warrant a cleanup phase. Consider using this report as input for `/gsd:plan-phase` or `/kw-code-cleanup`.
+This audit found enough issues to warrant a cleanup phase. Consider using this report as input for `/gsd-plan-phase` or `/kw-code-cleanup`.
 
 {If <=5 findings:}
 Minor fixes can be applied inline. No dedicated phase needed.

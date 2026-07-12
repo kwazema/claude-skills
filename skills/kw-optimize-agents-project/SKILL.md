@@ -105,7 +105,7 @@ Apply the approved changes:
 ### 7. Suggest next steps
 
 Based on what was created:
-- If templates were scaffolded with TODOs: "Run `/gsd:map-codebase` to fill the codebase analysis, or fill the reference docs manually over time."
+- If templates were scaffolded with TODOs: "Run `/gsd-map-codebase` to fill the codebase analysis, or fill the reference docs manually over time."
 - If AGENTS.md had stale info: "Consider running `/kw-audit-references` to verify reference docs are current."
 
 Do NOT commit. Let the user review and commit when ready.
