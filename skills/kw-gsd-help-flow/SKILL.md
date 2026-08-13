@@ -131,7 +131,7 @@ audit-uat → audit-milestone → milestone-summary
   → /kw-audit-references → /kw-stack-audit → cleanup
 ```
 
-**Trabajo paralelo:** `workstreams new` → `workspace new` → `manager` → `autonomous --interactive`
+**Trabajo paralelo:** `workstreams create {n}` → `workspace --new {n}` → `manager` → `autonomous --interactive`
 ⚠️ `autonomous` sin `--interactive` no pide confirmaciones — solo con plans ya revisados.
 
 ## Modos especiales (cuándo conviene)

@@ -58,6 +58,7 @@ Si tu memoria devuelve un comando que ya no existe:
 
 Estas sí usan subcomando posicional, no flag:
 
+- `/gsd-workstreams list|create <name>|status <name>|switch <name>|progress|complete <name>|resume <name>` (sin subcomando = `list`). Ojo: es `create`, no `new`, y contrasta con `/gsd-workspace --new`, que sí usa flags
 - `/gsd-surface list|status|profile <name>|disable <cluster>|enable <cluster>|reset`
 - `/gsd-graphify build|query <term>|status|diff`
 - `/gsd-thread list [--open|--resolved] | close <slug> | status <slug>`
