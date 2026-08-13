@@ -26,14 +26,23 @@ Agente de ruteo del pipeline GSD. No ejecuta comandos — orienta, propone caden
 
 ## Source of truth
 
-Este archivo es **solo el MAPA**. La fuente autoritativa vive en `~/.claude/skills/gsd-{nombre}/SKILL.md`.
+Este archivo es **solo el MAPA**. La fuente autoritativa vive en `~/.claude/skills/gsd-{nombre}/SKILL.md` (su `argument-hint` es la lista real de flags).
 
 - **Profundiza leyendo la skill real** cuando: piden argumentos/flags concretos, casos límite, modo 4 ("explícame gsd-X"), o la respuesta depende de detalles que cambian entre releases.
 - **Basta con el mapa** cuando: piden "qué skills existen para X", cadenas de flujo (post-fase, cierre milestone), exploración sin saber el comando exacto.
 
-## GSD Core (desde julio 2026)
+References de esta skill, cargar bajo demanda:
 
-GSD se llama ahora **GSD Core** (`@opengsd/gsd-core`, repo `open-gsd/gsd-core`): continuación comunitaria tras la salida del creador original. El pipeline, los comandos `/gsd-*` y el formato `.planning/` NO cambian; el versionado se reseteó (1.6.x nueva > 1.42.x legacy). Updates con `/gsd-update` normal (`--next` para canal RC).
+| Archivo | Cuándo |
+|---|---|
+| `references/flags.md` | Flags detallados del núcleo, comandos consolidados/renombrados, verbos vs flags, separador `-` vs `:` |
+| `references/gsd-core.md` | La transición GSD → GSD Core, novedades por versión, dualidad de instalación, watch-outs |
+
+## GSD Core (versión de referencia: 1.10.0, ago-2026)
+
+GSD se llama **GSD Core** (`@opengsd/gsd-core`, repo `open-gsd/gsd-core`): continuación comunitaria tras la salida del creador original. El pipeline, los comandos `/gsd-*` y el formato `.planning/` NO cambian; el versionado se reseteó (1.x nueva > 1.42.x legacy). Updates con `/gsd-update` normal (`--next` para canal RC).
+
+En instalación de skills planas (`~/.claude/skills/gsd-*/`) los comandos son `/gsd-X` con guion. La forma `/gsd:X` con dos puntos solo aplica si se instala como plugin de Claude Code (`commands/gsd/`). El template `claude-md.md` de 1.10.0 escribe la forma con dos puntos: si un `CLAUDE.md` generado la trae y tú usas skills planas, es cosmético, no un comando roto.
 
 - **Si la consulta trata del cambio, la migración o las novedades** (capabilities, coverage-UAT, drift precheck, MemPalace…): lee `references/gsd-core.md` de esta skill.
 - Para todo lo demás, este mapa y las skills reales siguen siendo la fuente.
@@ -43,8 +52,9 @@ GSD se llama ahora **GSD Core** (`@opengsd/gsd-core`, repo `open-gsd/gsd-core`):
 ## Pipeline canónico
 
 ```
+/gsd-next           → "no sé por dónde seguir" (detecta estado y propone acción)
 /gsd-explore        → "no sé aún qué es esto ni si merece fase"
-/gsd-phase add      → crear fase formal en ROADMAP
+/gsd-phase "{desc}" → crear fase formal en ROADMAP (sin flag = add)
 /gsd-spec-phase     → "¿QUÉ entrega y por QUÉ?" (ambiguity score)
 /gsd-spike          → "¿es viable técnicamente?" (binario, código desechable)
 /gsd-sketch         → "¿cómo se vería?" (mockups HTML, 2-3 variantes)
@@ -57,43 +67,45 @@ GSD se llama ahora **GSD Core** (`@opengsd/gsd-core`, repo `open-gsd/gsd-core`):
 
 `ui-phase` y `ai-integration-phase` no reemplazan `discuss-phase` — la complementan. Sus outputs alimentan el `plan-phase` posterior.
 
-## Mapa de skills (69)
+## Mapa de skills (71)
 
-**Inicio:** `gsd-new-project` (PROJECT.md + context) · `gsd-new-milestone` (abrir cycle) · `gsd-import` (plans externos) · `gsd-ingest-docs` (bootstrap desde ADRs/PRDs)
+**Inicio:** `gsd-new-project` (`--auto`) · `gsd-onboard` (codebase existente: mapea + ingesta docs + prepara planning; `--fast`) · `gsd-new-milestone` (abrir cycle, `--ws`, `--reset-phase-numbers`) · `gsd-import` (`--from <file>`) · `gsd-ingest-docs` (bootstrap desde ADRs/PRDs)
 
 **Pipeline core:** `gsd-explore` · `gsd-spec-phase` · `gsd-spike` · `gsd-sketch` · `gsd-discuss-phase` · `gsd-plan-phase` · `gsd-execute-phase`
 
 **Variantes de fase:** `gsd-ui-phase` (UI-SPEC) · `gsd-ai-integration-phase` (AI-SPEC) · `gsd-mvp-phase` (SPIDR splitting) · `gsd-ultraplan-phase` [BETA, cloud]
 
-**Phase CRUD:** `gsd-phase` (add | insert N.1 | remove | edit)
+**Phase CRUD:** `gsd-phase` — sin flag añade fase al final; `--insert` (decimal N.1), `--remove` (renumera), `--edit`
 
-**Post-fase / verificación:** `gsd-verify-work` (UAT) · `gsd-validate-phase` (Nyquist) · `gsd-code-review` (auto-fix con `--fix`) · `gsd-ui-review` (6-pilares) · `gsd-eval-review` (AI) · `gsd-secure-phase` (threat model) · `gsd-add-tests` (desde UAT) · `gsd-extract-learnings`
+> ⚠️ `/gsd-phase add` **no existe**. La skill usa flags; el binario `gsd-tools.cjs` usa verbos (`phase add`). Son superficies distintas: ver `references/flags.md`.
+
+**Post-fase / verificación:** `gsd-verify-work` (UAT, `--ws`) · `gsd-validate-phase` (Nyquist) · `gsd-code-review` (`--depth=quick|standard|deep`, `--files`, `--fix [--all] [--auto]`) · `gsd-ui-review` (6-pilares) · `gsd-eval-review` (AI) · `gsd-secure-phase` (threat model) · `gsd-add-tests` (desde UAT) · `gsd-extract-learnings`
 
 **PR / Ship:** `gsd-ship` (PR + review + merge) · `gsd-pr-branch` (filtra `.planning/`)
 
 **Cierre milestone:** `gsd-audit-uat` · `gsd-audit-milestone` · `gsd-milestone-summary` · `gsd-review-backlog` · `gsd-complete-milestone`
 
-**Estado:** `gsd-progress` (`--do` directo, `--next` siguiente) · `gsd-manager` (command center multi-fase) · `gsd-stats` · `gsd-health` (`--context` guard) · `gsd-surface` (clusters)
+**Estado:** `gsd-next` (smart entry, sin argumentos) · `gsd-progress` (`--do "tarea"`, `--next [--auto] [--converge]`, `--forensic`) · `gsd-manager` (`--analyze-deps`) · `gsd-stats` · `gsd-health` (`--context`, `--repair`) · `gsd-surface` (`list|status|profile|disable|enable|reset`)
 
-**Threads/workspace/parallel:** `gsd-thread` (cross-sesión) · `gsd-workspace` (sandbox) · `gsd-workstreams` (paralelo) · `gsd-pause-work` · `gsd-resume-work`
+**Threads/workspace/parallel:** `gsd-thread` (`list|close|status <slug>`) · `gsd-workspace` (`--new|--list|--remove`) · `gsd-workstreams` (paralelo) · `gsd-pause-work` (`--report`) · `gsd-resume-work`
 
-**Codebase intel:** `gsd-map-codebase` (`--fast`, `--query`) · `gsd-graphify` (knowledge graph) · `gsd-docs-update` (docs verificados)
+**Codebase intel:** `gsd-map-codebase` (`--fast [--focus tech|arch|quality|concerns]`, `--query <term>|status|diff|refresh`) · `gsd-graphify` (`build|query|status|diff`) · `gsd-docs-update` (`--force`, `--verify-only`)
 
 **Memoria cross-proyecto (opt-in, MemPalace):** `gsd-mempalace-capture` · `gsd-mempalace-recall`
 
-**Captura rápida:** `gsd-capture` (router por flags) · `gsd-fast` (trivial inline) · `gsd-quick` (fix con atomic commits)
+**Captura rápida:** `gsd-capture` (sin flag = todo estructurado) · `gsd-fast` (trivial inline) · `gsd-quick` (`--full`, `--validate`, `--discuss`, `--research`, `list|status|resume <slug>`)
 
-**Debug y forensics:** `gsd-debug` (científico, estado persistente) · `gsd-forensics` (post-mortem) · `gsd-audit-fix` (autónomo audit→fix)
+**Debug y forensics:** `gsd-debug` (`list|status|continue <slug>`, `--diagnose`) · `gsd-forensics` (post-mortem) · `gsd-audit-fix` (`--source`, `--severity`, `--max N`, `--dry-run`)
 
-**Peer review:** `gsd-review` (cross-AI) · `gsd-plan-review-convergence` (loop hasta sin HIGH) · `gsd-inbox` (triage GitHub)
+**Peer review:** `gsd-review` (`--phase N` + CLI: `--claude --codex --gemini --cursor --qwen --opencode --agy --all`) · `gsd-plan-review-convergence` (`--max-cycles N`, mismos CLIs + `--coderabbit --ollama --lm-studio --kimi-code`) · `gsd-inbox` (`--issues`, `--prs`, `--repo owner/repo`)
 
-**Modo autónomo:** `gsd-autonomous` (todas las fases en automático)
+**Modo autónomo:** `gsd-autonomous` (`--from N`, `--to N`, `--only N`, `--interactive`, `--converge`)
 
-**Sistema:** `gsd-config` (workflow/integraciones/profile) · `gsd-update` (`--sync`, `--reapply`) · `gsd-help` (chuleta nativa) · `gsd-undo` (revert con deps) · `gsd-cleanup`
+**Sistema:** `gsd-config` (`--advanced`, `--integrations`, `--profile <name>`) · `gsd-update` (`--sync`, `--reapply`, `--next`) · `gsd-help` (`--brief|--full|<topic>`) · `gsd-undo` (`--last N`, `--phase NN`, `--plan NN-MM`) · `gsd-cleanup`
 
 **Namespaces (fallback):** `gsd-ns-ideate` · `gsd-ns-workflow` · `gsd-ns-context` · `gsd-ns-review` · `gsd-ns-project` · `gsd-ns-manage`
 
-**Otros:** `gsd-profile-user` (perfil developer one-off)
+**Otros:** `gsd-profile-user` (`--questionnaire`, `--refresh`)
 
 ────────────────────────────────────────────────────────────
 
@@ -134,7 +146,7 @@ audit-uat → audit-milestone → milestone-summary
 
 ## Captura rápida (bypass del pipeline)
 
-`/gsd-capture` enruta solo si no le pasas flag: `--todo` · `--backlog` · `--note` · `--seed` (condicional para milestone X) · `--list`
+`/gsd-capture "texto"` **sin flag** crea un todo estructurado en `.planning/todos/`. No existe `--todo`: ese es el comportamiento por defecto. Con flag: `--note` (idea de fricción cero) · `--backlog` (aparca en ROADMAP con numeración 999.x) · `--seed` (idea con condición de disparo para un milestone futuro) · `--list` (browser interactivo de todos) · `--list-seeds` (auditoría de seeds, read-only).
 
 ## Cuándo saltar GSD entero
 
@@ -152,23 +164,15 @@ audit-uat → audit-milestone → milestone-summary
 - Ya discutida mentalmente → `/gsd-discuss-phase {N} --all`
 - Encadenar sin paradas → `/gsd-discuss-phase {N} --chain` (discuss → plan → execute)
 
-## Comandos consolidados (1.41.0 cleanup)
+## Comportamiento que cambió (1.7 → 1.10)
 
-Si tu memoria devuelve un comando que ya no existe:
+Altera lo que ves al ejecutar, no solo la lista de comandos:
 
-| Antes | Ahora |
-|-------|-------|
-| `/gsd-do "{t}"` / `/gsd-next` | `/gsd-progress --do|--next` (en GSD Core 1.7+ `/gsd-next` vuelve como smart entry) |
-| `/gsd-note`/`-plant-seed`/`-add-todo`/`-check-todos`/`-add-backlog` | `/gsd-capture --note|--seed|--todo|--list|--backlog` |
-| `/gsd-scan` / `/gsd-intel` | `/gsd-map-codebase --fast|--query` |
-| `/gsd-sync-skills` / `/gsd-reapply-patches` | `/gsd-update --sync|--reapply` |
-| `/gsd-code-review-fix` | `/gsd-code-review --fix` |
-| `/gsd-sketch-wrap-up` / `/gsd-spike-wrap-up` | `/gsd-{sketch|spike} --wrap-up` |
-| `/gsd-add-phase|insert|remove|edit` | `/gsd-phase add|insert|remove|edit` |
-| `/gsd-new-workspace|list|remove` | `/gsd-workspace new|list|remove` |
-| `/gsd-settings-{advanced|integrations|set-profile}` | `/gsd-config` |
-
-────────────────────────────────────────────────────────────
+- **`status: halted` en SUMMARY.md.** Parada por diseño (un spike que responde "no") es éxito, no fallo. Propaga transitivamente por `depends_on`: los dependientes salen *blocked* en vez de ofrecerse al executor. Si `progress` dice "blocked", busca el SUMMARY con `halted` antes de tocar nada.
+- **Los gates `blocking-human` ya no se auto-aprueban.** `autonomous` para de verdad donde el plan dice que hay que parar.
+- **El verifier se abstiene** en verdades `backstop` no inferibles en vez de dar false-pass (`PRESENT_BEHAVIOR_UNVERIFIED` → juicio humano).
+- **`plan-phase` abre con un tracer slice E2E** por defecto (`--no-tracer` lo desactiva).
+- **Hook write-guard**: bloquea un `Write` de fichero completo que encogería un artefacto `.planning/` curado. Append y edits puntuales no se ven afectados.
 
 ## Tips de ruteo
 
@@ -186,7 +190,7 @@ Si tu memoria devuelve un comando que ya no existe:
 **Ejemplo 1 — ruteo (feature):** `/kw-gsd-help-flow quiero que las facturas duplicadas se detecten al subir`
 ```
 Señales: feature + flow existente + UX abierta.
-Pipeline: explore (criterio) → phase add → spec-phase → sketch (modal/toast/inline)
+Pipeline: explore (criterio) → phase (sin flag) → spec-phase → sketch (modal/toast/inline)
           → discuss-phase (Edge Fn|SQL|frontend) → plan → execute
 Salta: spike (sin duda técnica).
 ```
@@ -199,26 +203,9 @@ Señales: bug, scope concreto.
 Salta: cadena de fase (mantenimiento, no feature).
 ```
 
-**Ejemplo 3 — temático:** `/kw-gsd-help-flow skills para mejorar la documentación`
-```
-Tres caminos según qué doc:
-- /gsd-docs-update — README/CHANGELOG/architecture verificados contra código
-- /gsd-extract-learnings — destila decisiones de fases completadas
-- /gsd-milestone-summary — resumen comprehensivo para onboarding
-Para detalles pídeme "explícame gsd-{nombre}".
-```
+**Ejemplo 3 — temático:** `skills para mejorar la documentación` → filtra a 3 con criterio explícito: `gsd-docs-update` (README/architecture verificados contra código) · `gsd-extract-learnings` (destila decisiones de fases cerradas) · `gsd-milestone-summary` (onboarding). Nunca listar 15.
 
-**Ejemplo 4 — flujo:** `/kw-gsd-help-flow cómo cerrar gsd milestone`
-```
-1. audit-uat → 2. audit-milestone → 3. milestone-summary
-→ 4. review-backlog → 5. complete-milestone
-→ 6. /kw-audit-references → 7. /kw-stack-audit → 8. cleanup
-
-Si alguna fase tiene UAT pendiente, audit-uat te bloquea antes.
-```
-
-**Ejemplo 5 — deep-dive:** `/kw-gsd-help-flow explícame gsd-ship`
-Claude lee `~/.claude/skills/gsd-ship/SKILL.md` y resume propósito, argumentos (`[phase|milestone]`), cuándo usarlo (tras `verify-work` con gates en verde) y diferencia con `pr-branch` (ship orquesta PR completo; pr-branch solo filtra `.planning/`).
+**Ejemplo 4 — deep-dive:** `explícame gsd-ship` → leer `~/.claude/skills/gsd-ship/SKILL.md` y resumir propósito, argumentos reales, cuándo usarlo (tras `verify-work` en verde) y diferencia con el vecino confundible (`pr-branch` solo filtra `.planning/`; `ship` orquesta el PR completo).
 
 ────────────────────────────────────────────────────────────
 

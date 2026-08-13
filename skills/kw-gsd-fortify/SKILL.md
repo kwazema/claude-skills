@@ -41,6 +41,8 @@ The skill detects which artifacts exist and adapts:
 
 Read the phase directory. Load CONTEXT.md and all PLAN.md files if they exist. Determine mode from the table above.
 
+**Check for halted plans first.** GSD marks a designed stop with `status: halted` in a plan's SUMMARY.md (a spike that answered "no", for example). A halt propagates transitively over `depends_on`, so every dependent plan is blocked, not merely incomplete. If any SUMMARY.md in the phase is `halted`, stop and report which plans are blocked and why — fortifying a plan whose gating question came back negative is wasted work. Ask the user whether the phase needs re-planning before continuing.
+
 **Check for UI-SPEC.md:** Look for `{phase_num}-UI-SPEC.md` in the phase directory. If it exists, the UI Compliance Reviewer agent (Agent 5) will be spawned in step 2. If it doesn't exist, Agent 5 is skipped entirely.
 
 **Load reference docs:** Read all `.planning/reference/*.md` files. These are living documents that describe the project's business logic, data model, integrations, and architecture. Pass their content to every research agent — it's the business context lens through which all analysis should be performed.
@@ -282,6 +284,7 @@ git commit -m "docs({phase_num}): fortify phase with deep codebase analysis and 
 - **Two targets, two purposes.** CONTEXT.md = understanding (WHY, WHAT IS). PLAN.md `<fortify_notes>` = action (HOW, WATCH OUT).
 - **Interactive, not blind.** Never write without presenting findings first. Gaps and inconsistencies are presented to the user.
 - **Plans are sacred.** Never modify existing tasks or frontmatter. Only append `<fortify_notes>` and `<fortify_notes_ui>`.
+- **Edit, never whole-file Write.** GSD ships a `PreToolUse` write-guard that blocks a full-file `Write` when it would drastically shrink a curated `.planning/` artifact. Every change here is additive (new CONTEXT.md sections, appended plan blocks), so use `Edit`. If a write-guard error appears, it means a full-file rewrite was attempted and it would have destroyed content — treat it as a correct block, not an obstacle to work around.
 - **Decisions are sacred.** `<decisions>` and `<domain>` in CONTEXT.md are NEVER modified.
 - **Exact references over vague pointers.** Every finding includes file:line.
 - **No noise.** "This file exists" is noise. "This file does X at line Y, the plan changes its input — verify it still works" is signal.

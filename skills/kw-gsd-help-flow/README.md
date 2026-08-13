@@ -10,7 +10,7 @@ npx skills add kwazema/claude-skills --skill kw-gsd-help-flow
 
 ## What it does
 
-- **Modo chuleta** (`/kw-gsd-help-flow`): pipeline canónico + mapa de las 69 skills GSD clasificadas por intent
+- **Modo chuleta** (`/kw-gsd-help-flow`): pipeline canónico + mapa de las 71 skills GSD clasificadas por intent
 - **Modo ruteo** (`/kw-gsd-help-flow {tarea}`): detecta señales en la descripción y propone qué comandos invocar, en qué orden, y qué saltar
 - **Modo temático** (`/kw-gsd-help-flow skills para X`): filtra 2-4 skills relevantes con criterio de cuál elegir
 - **Modo deep-dive** (`/kw-gsd-help-flow explícame gsd-X` o `cómo cerrar Z`): lee `~/.claude/skills/gsd-{nombre}/SKILL.md` y resume argumentos, flags, comportamiento y casos de uso
@@ -25,7 +25,7 @@ Imprime la chuleta completa: pipeline canónico, mapa de skills, cadenas de fluj
 
 > `/kw-gsd-help-flow añadir soporte para exportador A3`
 
-Detecta "añadir" como feature, propone pipeline `phase add → spec-phase → spike → discuss → plan → execute` con justificación de qué saltar.
+Detecta "añadir" como feature, propone pipeline `phase → spec-phase → spike → discuss → plan → execute` con justificación de qué saltar.
 
 > `/kw-gsd-help-flow skills para mejorar la documentación`
 

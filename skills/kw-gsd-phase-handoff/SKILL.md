@@ -24,12 +24,17 @@ Rebuild enough context to let `gsd-execute-phase` start from a reliable understa
    - `.planning/STATE.md`
    - `{phase}-CONTEXT.md`
    - all `{phase}-*-PLAN.md`
+   - all `{phase}-*-SUMMARY.md` that exist — check each for `status: halted`
    - `{phase}-UI-SPEC.md` if it exists
    - other phase files only if they resolve a real ambiguity
 4. Build a compact mental model:
    - what is already decided
    - what is in scope now
    - what is blocked, deferred, or still missing
+
+   On "blocked": a SUMMARY.md carrying `status: halted` records a *designed* stop, not a failure — the plan ran and its answer means the work it gated cannot proceed. The halt propagates transitively over `depends_on`, so name every downstream plan it blocks and its cause. Report these before anything else: they change what `gsd-execute-phase` can legitimately do.
+
+   Also surface where execution will stop on purpose. Checkpoints declared `gate="blocking-human"` are no longer auto-approved by the execute-phase orchestrator, so tell the user up front which gates will require them at the keyboard.
 5. Apply human-in-the-loop gates. Pause and ask only when one of these is true:
    - the pasted context conflicts with repo artifacts
    - a technical decision is still open and would change the result
