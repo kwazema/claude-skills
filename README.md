@@ -4,16 +4,51 @@ Claude Code skills for frontend development workflows. Focused on TypeScript, Re
 
 ## Install
 
+Skills are managed by the [skills CLI](https://skills.sh) (`npx skills`). No global install needed — `npx` fetches it on demand.
 
-# All skills
+**Install all skills from this repo:**
 ```bash
 npx skills add kwazema/claude-skills
 ```
 
-# Single skill
+**Install a single skill:**
 ```bash
 npx skills add kwazema/claude-skills --skill kw-stack-audit
 ```
+
+**Install globally** (`~/.claude/skills/` instead of the current project's `.claude/skills/`):
+```bash
+npx skills add kwazema/claude-skills -g
+```
+
+**Install to a specific agent** (default: interactive picker across all detected agents — Claude Code, Cursor, Windsurf, etc.):
+```bash
+npx skills add kwazema/claude-skills --agent claude-code
+```
+
+**Preview what a repo contains without installing anything:**
+```bash
+npx skills add kwazema/claude-skills --list
+```
+
+## Managing skills
+
+Everyday commands, once you have skills installed from any source (this repo or others):
+
+| Command | What it does |
+|---|---|
+| `npx skills list` | List skills installed in the current project |
+| `npx skills list -g` | List global skills |
+| `npx skills update` | Update all skills to their latest version (prompts for project vs. global scope) |
+| `npx skills update -g -y` | Update all global skills, no prompts — the form to use non-interactively |
+| `npx skills update kw-stack-audit` | Update a single skill by name |
+| `npx skills find typescript` | Search skills.sh by keyword |
+| `npx skills remove` | Interactive picker to remove installed skills |
+| `npx skills remove kw-stack-audit` | Remove a specific skill by name |
+
+Full reference: `npx skills --help`.
+
+> The [kw-update-skills](./skills/kw-update-skills/) skill in this repo wraps `npx skills update` — say "update skills" in a Claude Code chat and it runs the command for you instead of typing it in a terminal.
 
 ## Skills
 
